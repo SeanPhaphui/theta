@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/theta/static/css/main.073c9b0a.css",
-    "main.js": "/theta/static/js/main.e118a8b3.js",
+    "main.js": "/theta/static/js/main.60cffc6c.js",
     "static/js/787.1615fb9d.chunk.js": "/theta/static/js/787.1615fb9d.chunk.js",
     "static/media/logo.svg": "/theta/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/theta/index.html",
     "main.073c9b0a.css.map": "/theta/static/css/main.073c9b0a.css.map",
-    "main.e118a8b3.js.map": "/theta/static/js/main.e118a8b3.js.map",
+    "main.60cffc6c.js.map": "/theta/static/js/main.60cffc6c.js.map",
     "787.1615fb9d.chunk.js.map": "/theta/static/js/787.1615fb9d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.e118a8b3.js"
+    "static/js/main.60cffc6c.js"
   ]
 }
