@@ -1,0 +1,11 @@
+.Contract .item {
+    margin-bottom: 20px;
+}
+
+.MuiInputBase-root.MuiOutlinedInput-root {
+    border-radius: 10px;
+}
+
+.MuiFormControl-root {
+    width: 100%;
+}
