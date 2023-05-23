@@ -1,0 +1,13 @@
+.OptionCounter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.OptionCounter .badge-outer {
+    width: 100%;
+}
+
+.OptionCounter .MuiButtonBase-root.MuiButton-root {
+    border-radius: 10px;
+}

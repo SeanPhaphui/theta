@@ -1,0 +1,15 @@
+.ContractAction {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ContractAction .MuiButtonBase-root.MuiButton-root {
+    border-radius: 10px;
+    font-family: "CustomFont";
+    text-transform: none;
+}
+
+.ContractAction .add {
+    background-color: #007FFF;
+    width: 100%;
+}
