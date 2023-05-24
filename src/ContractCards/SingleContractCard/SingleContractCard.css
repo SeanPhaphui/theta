@@ -1,15 +1,20 @@
-.ContractCard {
-    margin-top: 20px;
-}
-
 .MuiPaper-root.MuiCard-root {
-    background: linear-gradient(to right bottom, #007FFF, #0059B2 120%);
     padding: 25px;
     border-radius: 10px;
     font-family: "CustomFont";
     color: white;
     margin-bottom: 20px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px, rgba(0, 0, 0, 0.04) 0px 10px 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px,
+        rgba(0, 0, 0, 0.04) 0px 10px 10px;
+}
+
+.active {
+    background: linear-gradient(to right bottom, #007fff, #0059b2 120%);
+}
+
+.expired {
+    background: linear-gradient(to right bottom, #15ad0f, #048300 120%);
+    /* color: "#9effa6", */
 }
 
 .MuiSvgIcon-root {
