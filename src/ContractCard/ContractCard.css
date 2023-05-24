@@ -1,0 +1,28 @@
+.ContractCard {
+    margin-top: 20px;
+    width: 80%;
+}
+
+.MuiPaper-root.MuiCard-root {
+    background: linear-gradient(to right bottom, #007FFF, #0059B2 120%);
+    padding: 25px;
+    border-radius: 10px;
+    font-family: "CustomFont";
+    color: white;
+    margin-bottom: 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px, rgba(0, 0, 0, 0.04) 0px 10px 10px;
+}
+
+.MuiSvgIcon-root {
+    font-size: 1rem !important;
+}
+
+.MuiLinearProgress-bar {
+    background-color: white !important;
+    border-radius: 100px;
+}
+
+.MuiLinearProgress-root {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-radius: 100px;
+}
