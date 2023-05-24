@@ -1,0 +1,9 @@
+.ContractsPage {
+    width: 85%;
+}
+
+.ContractsPage .title {
+    font-family: "Plus Jakarta Sans";
+    font-weight: 800;
+    font-size: 36px;
+}
