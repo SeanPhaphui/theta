@@ -59,9 +59,9 @@ const ContractCards: React.FC<ContractCardsProps> = (props) => {
     return (
         <div className="ContractCard">
             {contracts &&
-                contracts.map((element) => {
+                contracts.map((element, index) => {
                     return (
-                        <Card>
+                        <Card key={index}>
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                                 <ScheduleIcon />
                                 <Typography
