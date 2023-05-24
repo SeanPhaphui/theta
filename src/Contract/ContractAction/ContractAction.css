@@ -9,6 +9,10 @@
     text-transform: none;
 }
 
+.ContractAction .MuiButtonBase-root.MuiButton-root.Mui-disabled {
+    background-color: #0000001f;
+}
+
 .ContractAction .add {
     background-color: #007FFF;
     width: 100%;

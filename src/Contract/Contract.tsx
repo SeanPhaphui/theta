@@ -1,25 +1,50 @@
 import { TextField } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
 import React, { ChangeEvent, useEffect, useState } from "react";
+import { timeProgress } from "../Utils/Utils";
 import "./Contract.css";
 import ContractAction from "./ContractAction/ContractAction";
 import OptionCounter from "./OptionCounter/OptionCounter";
 import OptionPicker from "./OptionPicker/OptionPicker";
 
-const Contract: React.FC = () => {
+dayjs.extend(advancedFormat);
+
+export interface ContractObject {
+    ticker: string;
+    optionType: string;
+    strikePrice: string;
+    startDate: Dayjs;
+    expireDate: Dayjs;
+    sellPrice: string;
+    optionCount: number;
+    timeProgress: number;
+}
+
+interface ContractProps {
+    ticker: string;
+    onAdd: (contract: ContractObject) => void;
+}
+
+const Contract: React.FC<ContractProps> = (props) => {
+    const { ticker, onAdd } = props;
     const [option, setOption] = useState<string>();
     const [strikePrice, setStrikePrice] = useState<string>();
     const [start, setStart] = useState<Dayjs | null>(dayjs());
     const [exp, setExp] = useState<Dayjs | null>(null);
     const [sellPrice, setSellPrice] = useState<string>();
     const [optionCount, setOptionCount] = useState<number>(1);
-    const [recordContract, setRecordContract] = useState<boolean>();
 
     const [current, setCurrent] = useState<number>(0);
     const [days, setDays] = useState<number | null>(null);
 
+    const [disableAddContract, setDisableAddContract] = useState<boolean>(true);
+
     const currentDate = dayjs();
+
+    const currentDateString = currentDate.format("MMMM Do");
+    console.log(currentDateString);
 
     useEffect(() => {
         calculateDaysBetweenDates();
@@ -38,6 +63,35 @@ const Contract: React.FC = () => {
     const inputProps = {
         type: "number",
         pattern: "[0-9]*",
+    };
+
+    useEffect(() => {
+        if(option && strikePrice && start && exp && sellPrice){
+            setDisableAddContract(false);
+        } else {
+            setDisableAddContract(true);
+        }
+        calculateDaysBetweenDates();
+    }, [option, strikePrice, start, exp, sellPrice]);
+
+    const buildContract = () => {
+        if (option && strikePrice && start && exp && sellPrice) {
+            let totalSellPrice: number = Number(sellPrice);
+            if(optionCount > 1){
+                totalSellPrice = Number(sellPrice) * optionCount;
+            }
+            const contract: ContractObject = {
+                ticker: ticker,
+                optionType: option,
+                strikePrice: "$" + strikePrice,
+                startDate: start,
+                expireDate: exp,
+                sellPrice: "+$" + totalSellPrice,
+                optionCount: optionCount,
+                timeProgress: timeProgress(start, exp),
+            };
+            onAdd(contract);
+        }
     };
 
     return (
@@ -94,15 +148,10 @@ const Contract: React.FC = () => {
             </div>
             <div className="item">
                 <ContractAction
-                    onContractActionChange={(recordContract: boolean) =>
-                        setRecordContract(recordContract)
-                    }
+                    disabled={disableAddContract}
+                    onContractActionChange={() => buildContract()}
                 />
             </div>
-            {/* {days !== null && <div>{current + "%"}</div>}
-            {days !== null && (
-                <CircularProgress variant="determinate" value={current} />
-            )} */}
         </div>
     );
 };

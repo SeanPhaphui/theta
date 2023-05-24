@@ -1,3 +1,15 @@
+.ContractDialog {
+    width: 80%;
+}
+
+.ContractDialog .MuiButtonBase-root {
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 10px;
+    font-family: "CustomFont";
+    text-transform: none;
+}
+
 .MuiPaper-root.MuiDialog-paper {
     border-radius: 10px;
     width: 100%;

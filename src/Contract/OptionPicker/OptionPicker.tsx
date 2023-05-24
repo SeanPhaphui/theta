@@ -26,10 +26,10 @@ const OptionPicker: React.FC<OptionPickerProps> = (props) => {
                 exclusive
                 onChange={handleChange}
             >
-                <ToggleButton className="left-toggle-button" value="call">
+                <ToggleButton className="left-toggle-button" value="Call">
                     Call
                 </ToggleButton>
-                <ToggleButton className="right-toggle-button" value="put">
+                <ToggleButton className="right-toggle-button" value="Put">
                     Put
                 </ToggleButton>
             </ToggleButtonGroup>

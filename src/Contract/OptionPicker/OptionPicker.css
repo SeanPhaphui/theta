@@ -1,5 +1,6 @@
 .MuiButtonBase-root.MuiToggleButton-root {
     font-family: "CustomFont";
+    font-weight: 700;
     text-transform: none;
 }
 

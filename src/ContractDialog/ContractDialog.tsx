@@ -1,26 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ContractDialog.css";
-import { Button, Dialog, DialogTitle } from "@mui/material";
-import Contract from "../Contract/Contract";
+import {
+    Autocomplete,
+    Button,
+    Dialog,
+    DialogTitle,
+    Paper,
+    TextField,
+} from "@mui/material";
+import Contract, { ContractObject } from "../Contract/Contract";
+import tickers from "./../.resources/tickers.json";
 
-const ContractDialog: React.FC = () => {
+interface ContractDialogProps {
+    onAddConract: (contracts: ContractObject) => void;
+}
+
+const ContractDialog: React.FC<ContractDialogProps> = (props) => {
+    const { onAddConract } = props;
     const [open, setOpen] = React.useState(false);
+    const [disableAddContract, setDisableAddContract] = useState(true);
 
     const handleClickOpen = () => {
         setOpen(true);
     };
-    const handleClose = (value: string) => {
+    const handleClose = () => {
         setOpen(false);
     };
 
+    const onAutocompleteChange = (event: any, newInputValue: string) => {
+        setPreTicker(newInputValue.toUpperCase());
+        newInputValue !== "" ? setDisableAddContract(false): setDisableAddContract(true);
+    }
+
+    const handleCloseAndAdd = (contracts: ContractObject) => {
+        onAddConract(contracts);
+        setOpen(false);
+    };
+
+    const [preTicker, setPreTicker] = useState<string>();
+
     return (
         <div className="ContractDialog">
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Open simple dialog
+            <Autocomplete
+                className="input-bottom"
+                freeSolo
+                options={tickers.map((option) => option.ticker)}
+                renderInput={(params) => (
+                    <TextField {...params} label="Stock ticker" />
+                )}
+                onInputChange={onAutocompleteChange}
+            />
+            <Button
+                variant="outlined"
+                disabled={disableAddContract}
+                onClick={handleClickOpen}
+            >
+                Add contract
             </Button>
             <Dialog onClose={handleClose} open={open}>
-                <DialogTitle>GOOGL</DialogTitle>
-                <Contract/>
+                <DialogTitle>{preTicker}</DialogTitle>
+                {preTicker && (
+                    <Contract ticker={preTicker} onAdd={handleCloseAndAdd} />
+                )}
             </Dialog>
         </div>
     );
