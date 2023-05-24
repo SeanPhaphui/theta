@@ -24,6 +24,18 @@
   color: #132F4C;
 }
 
+.title {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 800;
+  font-size: 36px;
+}
+
+.secondary-title {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 800;
+  font-size: 36px;
+}
+
 .App-link {
   color: #61dafb;
 }

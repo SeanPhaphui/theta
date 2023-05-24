@@ -5,7 +5,7 @@ import Contract, { ContractObject } from "./Contract/Contract";
 import "./font.css";
 import ContractDialog from "./ContractDialog/ContractDialog";
 import ContractCards from "./ContractCard/ContractCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { timeProgress } from "./Utils/Utils";
 
@@ -17,7 +17,7 @@ function App() {
             strikePrice: "$120",
             startDate: dayjs('2023-05-10'),
             expireDate: dayjs('2023-06-16'),
-            sellPrice: "+$170",
+            sellPrice: 700,
             optionCount: 1,
             timeProgress: timeProgress(dayjs('2023-05-10'),dayjs('2023-06-16')),
         },
@@ -27,23 +27,31 @@ function App() {
           strikePrice: "$20",
           startDate: dayjs('2023-05-01'),
           expireDate: dayjs('2023-06-16'),
-          sellPrice: "+$120",
+          sellPrice: 450,
           optionCount: 3,
           timeProgress: timeProgress(dayjs('2023-05-01'),dayjs('2023-06-16')),
       },
     ];
-    const [contract, setContracts] = useState<ContractObject[]>(testContracts);
+    const [contracts, setContracts] = useState<ContractObject[]>(testContracts);
+    const [totalSellPrice, setTotalSellPrice] = useState<number>(0);
 
     function contractsHandler(contracts: ContractObject): void {
         setContracts((prevArray) => [contracts, ...prevArray]);
     }
 
+    useEffect(() => {
+      const totalSellPrice: number = contracts.reduce((total, contract) => total + contract.sellPrice, 0);
+      setTotalSellPrice(totalSellPrice);
+  }, [contracts]);
+
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className="App">
                 <header className="App-header">
+                    <div className="title">Total Return</div>
+                    <div className="secondary-title">{"$" + totalSellPrice.toLocaleString()}</div>
                     <ContractDialog onAddConract={contractsHandler} />
-                    {contract && <ContractCards contracts={contract} />}
+                    {contracts && <ContractCards contracts={contracts} />}
                 </header>
             </div>
         </LocalizationProvider>

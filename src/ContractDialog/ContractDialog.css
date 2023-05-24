@@ -1,5 +1,6 @@
 .ContractDialog {
-    width: 80%;
+    margin-top: 20px;
+    width: 85%;
 }
 
 .ContractDialog .MuiButtonBase-root {

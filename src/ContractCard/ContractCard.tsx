@@ -109,7 +109,7 @@ const ContractCards: React.FC<ContractCardsProps> = (props) => {
                                         mr: "5px",
                                     }}
                                 >
-                                    {element.sellPrice}
+                                    {"+$"+ element.sellPrice}
                                 </Typography>
                             </Box>
                             {/* <Box

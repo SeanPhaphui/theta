@@ -17,7 +17,7 @@ export interface ContractObject {
     strikePrice: string;
     startDate: Dayjs;
     expireDate: Dayjs;
-    sellPrice: string;
+    sellPrice: number;
     optionCount: number;
     timeProgress: number;
 }
@@ -86,7 +86,7 @@ const Contract: React.FC<ContractProps> = (props) => {
                 strikePrice: "$" + strikePrice,
                 startDate: start,
                 expireDate: exp,
-                sellPrice: "+$" + totalSellPrice,
+                sellPrice: totalSellPrice,
                 optionCount: optionCount,
                 timeProgress: timeProgress(start, exp),
             };
