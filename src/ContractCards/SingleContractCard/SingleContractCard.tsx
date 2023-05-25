@@ -10,6 +10,7 @@ import "./SingleContractCard.css";
 import { ContractObject } from "../../Contract/Contract";
 import {
     getContractStatus,
+    getDaysCardStatus,
     getStatusColorVariation,
     hasDayPassed,
     timeProgress,
@@ -53,11 +54,6 @@ const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
     const expired: boolean = hasDayPassed(dayjs(), contract.expireDate);
     const boughtBack: boolean = contract.totalBuyBackPrice > 0;
 
-    const timeStatus: string =
-        expired || boughtBack
-            ? "Closed"
-            : contract.expireDate.format("MMMM Do");
-
     const contractStatus: string = getContractStatus(contract);
     const statusColors = getStatusColorVariation(contractStatus);
 
@@ -70,7 +66,7 @@ const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
                         sx={{ fontSize: 12, ml: "5px", mt: "1px" }}
                         color="rgba(255, 255, 255, 0.7);"
                     >
-                        {timeStatus}
+                        {contract.expireDate.format("MMMM Do")}
                     </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -106,15 +102,33 @@ const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
                             ? contract.optionCount + " sells"
                             : contract.optionCount + " sell"}
                     </Typography>
-                    <Typography
+                    <Box
                         sx={{
-                            fontSize: "16px",
-                            fontFamily: "IBMPlexSans-Medium",
-                            mr: "5px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
                         }}
                     >
-                        {lostMoney ? "-$" + netReturn : "+$" + netReturn}
-                    </Typography>
+                        <Typography
+                            sx={{
+                                fontSize: "16px",
+                                fontFamily: "IBMPlexSans-Medium",
+                                mr: "5px",
+                            }}
+                        >
+                            {lostMoney ? "-$" + netReturn : "+$" + netReturn}
+                        </Typography>
+                        <Typography
+                            sx={{
+                                fontSize: "14px",
+                                fontFamily: "IBMPlexSans-Medium",
+                                color: statusColors.main,
+                                mr: "5px",
+                            }}
+                        >
+                            {getDaysCardStatus(contract.expireDate)}
+                        </Typography>
+                    </Box>
                 </Box>
                 <LinearProgressWithLabel
                     value={timeProgress(

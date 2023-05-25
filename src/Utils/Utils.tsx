@@ -17,6 +17,17 @@ export const hasDayPassed = (d1: dayjs.Dayjs, d2: dayjs.Dayjs): boolean => {
     return d1.isAfter(d2);
 };
 
+export const getDaysCardStatus = (expireDate: dayjs.Dayjs): string => {
+    const daysLeft = expireDate.diff(dayjs(), "day");
+    if(daysLeft < 0){
+        return "Closed";
+    } else if (daysLeft > 1){
+        return daysLeft + " days left";
+    } else {
+        return "1 day left";
+    }
+};
+
 export const getContractStatus = (contract: ContractObject): string => {
     const expired = hasDayPassed(dayjs(), contract.expireDate);
     const boughtBack = contract.totalBuyBackPrice > 0;
