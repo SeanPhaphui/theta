@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
+import { v4 as uuidv4 } from 'uuid';
 import { ContractObject } from "../Contract/Contract";
 
 export const timeProgress = (startDate: Dayjs, endDate: Dayjs): number => {
@@ -34,13 +35,13 @@ export const getStatusColorVariation = (status: string) => {
     switch (status) {
         case 'loss':
             return {
-                main: '#ff6d6d', // replace with the main color for loss status
-                variant: '#ff5050' // replace with the variant color for loss status
+                main: '#FFCCCC', // replace with the main color for loss status
+                variant: '#FF9999' // replace with the variant color for loss status
             };
         case 'gain':
             return {
-                main: '#9effa6', // replace with the main color for gain status
-                variant: '#9effa6' // replace with the variant color for gain status
+                main: '#B5F5B5', // replace with the main color for gain status
+                variant: '#8CE68C' // replace with the variant color for gain status
             };
         default:
             return {
@@ -50,28 +51,32 @@ export const getStatusColorVariation = (status: string) => {
     }
 }
 
+
 export const testContracts: ContractObject[] = [
     {
+        id: uuidv4(),
         ticker: "GOOGL",
         optionType: "Call",
         strikePrice: "$120",
         startDate: dayjs("2023-05-10"),
         expireDate: dayjs("2023-06-16"),
-        totalSellPrice: 100,
-        optionCount: 1,
+        totalSellPrice: 120,
+        optionCount: 3,
         totalBuyBackPrice: 0,
     },
     {
+        id: uuidv4(),
         ticker: "GOOG",
         optionType: "Call",
         strikePrice: "$120",
         startDate: dayjs("2023-05-10"),
         expireDate: dayjs("2023-06-16"),
-        totalSellPrice: 120,
+        totalSellPrice: 270,
         optionCount: 1,
         totalBuyBackPrice: 20,
     },
     {
+        id: uuidv4(),
         ticker: "AMC",
         optionType: "Put",
         strikePrice: "$20",
@@ -82,6 +87,7 @@ export const testContracts: ContractObject[] = [
         totalBuyBackPrice: 0,
     },
     {
+        id: uuidv4(),
         ticker: "GOOGL",
         optionType: "Call",
         strikePrice: "$100",
@@ -89,6 +95,6 @@ export const testContracts: ContractObject[] = [
         expireDate: dayjs("2023-05-05"),
         totalSellPrice: 200,
         optionCount: 1,
-        totalBuyBackPrice: 350,
+        totalBuyBackPrice: 250,
     },
 ];

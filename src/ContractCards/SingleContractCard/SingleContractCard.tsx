@@ -1,11 +1,11 @@
-import ScheduleIcon from "@mui/icons-material/Schedule";
+import React, { useEffect, useState } from "react";
 import { Box, Card, Typography } from "@mui/material";
 import LinearProgress, {
     LinearProgressProps,
 } from "@mui/material/LinearProgress";
+import ScheduleIcon from "@mui/icons-material/Schedule";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
-import React, { useEffect, useState } from "react";
 import "./SingleContractCard.css";
 import { ContractObject } from "../../Contract/Contract";
 import {
@@ -14,6 +14,8 @@ import {
     hasDayPassed,
     timeProgress,
 } from "../../Utils/Utils";
+
+dayjs.extend(advancedFormat);
 
 function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number; status: string }
@@ -39,32 +41,25 @@ interface SingleContractCardProps {
 }
 
 const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
+    console.log("RENDERD");
     const { contract } = props;
+    function handleClick(event: React.MouseEvent<HTMLElement>): void {}
 
-    function handleClick(event: React.MouseEvent<HTMLElement>): void {
-        console.log("Clicked");
-    }
-    const [lossAmount, setLossAmount] = useState<number>(contract.totalSellPrice - contract.totalBuyBackPrice);
-    const lostMoney: boolean =
-        contract.totalBuyBackPrice > contract.totalSellPrice;
-
-    useEffect(() => {
-        if (lostMoney) {
-            const loss = contract.totalBuyBackPrice - contract.totalSellPrice;
-            setLossAmount(loss);
-        }
-    }, [contract.totalBuyBackPrice, contract.totalSellPrice, lostMoney]);
+    const lostMoney = contract.totalBuyBackPrice > contract.totalSellPrice;
+    const netReturn = Math.abs(
+        contract.totalSellPrice - contract.totalBuyBackPrice
+    );
 
     const expired: boolean = hasDayPassed(dayjs(), contract.expireDate);
     const boughtBack: boolean = contract.totalBuyBackPrice > 0;
-
-    const contractStatus: string = getContractStatus(contract);
-    const statusColors = getStatusColorVariation(contractStatus);
 
     const timeStatus: string =
         expired || boughtBack
             ? "Closed"
             : contract.expireDate.format("MMMM Do");
+
+    const contractStatus: string = getContractStatus(contract);
+    const statusColors = getStatusColorVariation(contractStatus);
 
     return (
         <div className="SingleContractCard">
@@ -118,9 +113,7 @@ const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
                             mr: "5px",
                         }}
                     >
-                        {lostMoney
-                            ? "-$" + lossAmount
-                            : "+$" + lossAmount}
+                        {lostMoney ? "-$" + netReturn : "+$" + netReturn}
                     </Typography>
                 </Box>
                 <LinearProgressWithLabel

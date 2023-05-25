@@ -12,7 +12,7 @@ import Contract, { ContractObject } from "../Contract/Contract";
 import tickers from "./../.resources/tickers.json";
 
 interface ContractDialogProps {
-    onAddConract: (contracts: ContractObject) => void;
+    onAddConract: (contract: ContractObject) => void;
 }
 
 const ContractDialog: React.FC<ContractDialogProps> = (props) => {
@@ -32,8 +32,8 @@ const ContractDialog: React.FC<ContractDialogProps> = (props) => {
         newInputValue !== "" ? setDisableAddContract(false): setDisableAddContract(true);
     }
 
-    const handleCloseAndAdd = (contracts: ContractObject) => {
-        onAddConract(contracts);
+    const handleCloseAndAdd = (contract: ContractObject) => {
+        onAddConract(contract);
         setOpen(false);
     };
 

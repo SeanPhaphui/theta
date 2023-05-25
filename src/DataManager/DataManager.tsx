@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useRef } from "react";
 import { ContractObject } from "../Contract/Contract";
@@ -6,10 +7,11 @@ import "./DataManager.css";
 interface ContractDialogProps {
     contracts: ContractObject[];
     restoreContracts: (contracts: ContractObject[]) => void;
+    clearContracts: () => void;
 }
 
 const DataManager: React.FC<ContractDialogProps> = (props) => {
-    const {contracts, restoreContracts} = props;
+    const { contracts, restoreContracts, clearContracts } = props;
     const exportToJSON = () => {
         const jsonContent = JSON.stringify(contracts, null, 2);
         const dataURI =
@@ -54,25 +56,21 @@ const DataManager: React.FC<ContractDialogProps> = (props) => {
         }
     };
 
-    const handleButtonClick = () => {
-        if (inputFileRef.current) {
-            inputFileRef.current.click();
-        }
-    };
-
     return (
         <div className="DataManager">
-            <button onClick={exportToJSON}>Backup Contracts</button>
-            <div>
+            <Button onClick={exportToJSON}>Save</Button>
+            <Button component="label" htmlFor="fileInput">
+                Restore
                 <input
                     type="file"
-                    ref={inputFileRef}
+                    id="fileInput"
                     accept=".json"
                     style={{ display: "none" }}
+                    ref={inputFileRef}
                     onChange={handleFileChange}
                 />
-                <button onClick={handleButtonClick}>Restore Contracts</button>
-            </div>
+            </Button>
+            <Button onClick={clearContracts}>Clear</Button>
         </div>
     );
 };

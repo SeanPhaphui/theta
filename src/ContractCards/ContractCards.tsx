@@ -9,13 +9,14 @@ interface ContractCardsProps {
 
 const ContractCards: React.FC<ContractCardsProps> = (props) => {
     const { contracts } = props;
+    console.log("Contracts Card")
 
     return (
         <div className="ContractCards">
             {contracts &&
-                contracts.map((contract, index) => {
+                contracts.map((contract) => {
                     return (
-                        <SingleContractCard contract={contract} key={index}/>
+                        <SingleContractCard contract={contract} key={contract.id}/>
                     );
                 })}
         </div>

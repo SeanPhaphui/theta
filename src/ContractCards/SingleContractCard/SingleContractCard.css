@@ -12,16 +12,13 @@
     background: linear-gradient(to right bottom, #007fff, #0059b2 120%);
 }
 
-.gain {
-    background: linear-gradient(to right bottom, #1DB45A, #006400 120%);
-    /* color: "#9effa6", */
-}
-
 .loss {
-    background: linear-gradient(to right bottom, #EB0014, #8B0000 120%);
-    /* color: "#9effa6", */
-}
-
+    background: linear-gradient(to right bottom, #e05967, #8b0000 120%);
+    }
+    
+    .gain {
+    background: linear-gradient(to right bottom, #38c731, #008000 120%);
+    }
 
 
 .MuiSvgIcon-root {
