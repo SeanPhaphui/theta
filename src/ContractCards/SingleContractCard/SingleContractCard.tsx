@@ -126,7 +126,7 @@ const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
                                 mr: "5px",
                             }}
                         >
-                            {getDaysCardStatus(contract.expireDate)}
+                            {getDaysCardStatus(contract.expireDate, boughtBack)}
                         </Typography>
                     </Box>
                 </Box>

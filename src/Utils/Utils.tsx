@@ -17,9 +17,9 @@ export const hasDayPassed = (d1: dayjs.Dayjs, d2: dayjs.Dayjs): boolean => {
     return d1.isAfter(d2);
 };
 
-export const getDaysCardStatus = (expireDate: dayjs.Dayjs): string => {
+export const getDaysCardStatus = (expireDate: dayjs.Dayjs, boughtBack: boolean): string => {
     const daysLeft = expireDate.diff(dayjs(), "day");
-    if(daysLeft < 0){
+    if(daysLeft < 0 || boughtBack){
         return "Closed";
     } else if (daysLeft > 1){
         return daysLeft + " days left";
@@ -66,46 +66,46 @@ export const getStatusColorVariation = (status: string) => {
 export const testContracts: ContractObject[] = [
     {
         id: uuidv4(),
-        ticker: "GOOGL",
-        optionType: "Call",
-        strikePrice: "$120",
-        startDate: dayjs("2023-05-10"),
-        expireDate: dayjs("2023-06-16"),
-        totalSellPrice: 120,
-        optionCount: 3,
-        totalBuyBackPrice: 0,
-    },
-    {
-        id: uuidv4(),
-        ticker: "GOOG",
-        optionType: "Call",
-        strikePrice: "$120",
-        startDate: dayjs("2023-05-10"),
-        expireDate: dayjs("2023-06-16"),
-        totalSellPrice: 270,
-        optionCount: 1,
-        totalBuyBackPrice: 20,
-    },
-    {
-        id: uuidv4(),
-        ticker: "AMC",
+        ticker: "COIN",
         optionType: "Put",
-        strikePrice: "$20",
-        startDate: dayjs("2023-04-01"),
-        expireDate: dayjs("2023-05-16"),
-        totalSellPrice: 150,
-        optionCount: 3,
+        strikePrice: "$60",
+        startDate: dayjs("2023-05-12"),
+        expireDate: dayjs("2023-06-16"),
+        totalSellPrice: 530,
+        optionCount: 1,
         totalBuyBackPrice: 0,
     },
     {
         id: uuidv4(),
-        ticker: "GOOGL",
+        ticker: "SOFI",
         optionType: "Call",
-        strikePrice: "$100",
-        startDate: dayjs("2023-04-04"),
-        expireDate: dayjs("2023-05-05"),
-        totalSellPrice: 200,
+        strikePrice: "$5",
+        startDate: dayjs("2023-05-02"),
+        expireDate: dayjs("2023-05-26"),
+        totalSellPrice: 78,
+        optionCount: 3,
+        totalBuyBackPrice: 66,
+    },
+    {
+        id: uuidv4(),
+        ticker: "COIN",
+        optionType: "Put",
+        strikePrice: "$63",
+        startDate: dayjs("2023-04-20"),
+        expireDate: dayjs("2023-04-28"),
+        totalSellPrice: 271,
         optionCount: 1,
-        totalBuyBackPrice: 250,
+        totalBuyBackPrice: 0,
+    },
+    {
+        id: uuidv4(),
+        ticker: "AMZN",
+        optionType: "Put",
+        strikePrice: "$100",
+        startDate: dayjs("2023-04-11"),
+        expireDate: dayjs("2023-04-28"),
+        totalSellPrice: 410,
+        optionCount: 1,
+        totalBuyBackPrice: 500,
     },
 ];
