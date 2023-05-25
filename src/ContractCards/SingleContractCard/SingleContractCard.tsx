@@ -8,10 +8,15 @@ import advancedFormat from "dayjs/plugin/advancedFormat";
 import React, { useEffect, useState } from "react";
 import "./SingleContractCard.css";
 import { ContractObject } from "../../Contract/Contract";
-import { hasDayPassed, timeProgress } from "../../Utils/Utils";
+import {
+    getContractStatus,
+    getStatusColorVariation,
+    hasDayPassed,
+    timeProgress,
+} from "../../Utils/Utils";
 
 function LinearProgressWithLabel(
-    props: LinearProgressProps & { value: number, expired: boolean }
+    props: LinearProgressProps & { value: number; status: string }
 ) {
     return (
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -19,10 +24,9 @@ function LinearProgressWithLabel(
                 <LinearProgress variant="determinate" {...props} />
             </Box>
             <Box sx={{ minWidth: 35 }}>
-                <Typography
-                    variant="body2"
-                    color = {props.expired ? "#9effa6" : "rgb(0, 200, 255)"}
-                >{`${Math.round(props.value)}%`}</Typography>
+                <Typography variant="body2" color={props.status}>{`${Math.round(
+                    props.value
+                )}%`}</Typography>
             </Box>
         </Box>
     );
@@ -32,29 +36,46 @@ dayjs.extend(advancedFormat);
 
 interface SingleContractCardProps {
     contract: ContractObject;
-    index: number;
 }
 
 const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
-    const { contract, index } = props;
-
-    const expired: boolean = hasDayPassed(dayjs(), contract.expireDate);
-    const className: string = expired ? "expired" : "active";
+    const { contract } = props;
 
     function handleClick(event: React.MouseEvent<HTMLElement>): void {
-        console.log("Clicked")
+        console.log("Clicked");
     }
+    const [lossAmount, setLossAmount] = useState<number>(contract.totalSellPrice - contract.totalBuyBackPrice);
+    const lostMoney: boolean =
+        contract.totalBuyBackPrice > contract.totalSellPrice;
+
+    useEffect(() => {
+        if (lostMoney) {
+            const loss = contract.totalBuyBackPrice - contract.totalSellPrice;
+            setLossAmount(loss);
+        }
+    }, [contract.totalBuyBackPrice, contract.totalSellPrice, lostMoney]);
+
+    const expired: boolean = hasDayPassed(dayjs(), contract.expireDate);
+    const boughtBack: boolean = contract.totalBuyBackPrice > 0;
+
+    const contractStatus: string = getContractStatus(contract);
+    const statusColors = getStatusColorVariation(contractStatus);
+
+    const timeStatus: string =
+        expired || boughtBack
+            ? "Closed"
+            : contract.expireDate.format("MMMM Do");
 
     return (
         <div className="SingleContractCard">
-            <Card className={className} key={index} onClick={handleClick}>
+            <Card className={contractStatus} onClick={handleClick}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <ScheduleIcon />
                     <Typography
                         sx={{ fontSize: 12, ml: "5px", mt: "1px" }}
                         color="rgba(255, 255, 255, 0.7);"
                     >
-                        {contract.expireDate.format("MMMM Do")}
+                        {timeStatus}
                     </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -83,7 +104,7 @@ const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
                         sx={{
                             fontSize: "14px",
                             fontFamily: "IBMPlexSans-Medium",
-                            color: expired ? "#9effa6" : "#99CCF3",
+                            color: statusColors.main,
                         }}
                     >
                         {contract.optionCount > 1
@@ -97,10 +118,18 @@ const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
                             mr: "5px",
                         }}
                     >
-                        {"+$" + contract.sellPrice}
+                        {lostMoney
+                            ? "-$" + lossAmount
+                            : "+$" + lossAmount}
                     </Typography>
                 </Box>
-                <LinearProgressWithLabel value={timeProgress(contract.startDate, contract.expireDate)} expired={expired}/>
+                <LinearProgressWithLabel
+                    value={timeProgress(
+                        contract.startDate,
+                        contract.expireDate
+                    )}
+                    status={statusColors.variant}
+                />
             </Card>
         </div>
     );

@@ -62,7 +62,7 @@ const DataManager: React.FC<ContractDialogProps> = (props) => {
 
     return (
         <div className="DataManager">
-            <button onClick={exportToJSON}>Export JSON</button>
+            <button onClick={exportToJSON}>Backup Contracts</button>
             <div>
                 <input
                     type="file"

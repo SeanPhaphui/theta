@@ -15,7 +15,7 @@ const ContractCards: React.FC<ContractCardsProps> = (props) => {
             {contracts &&
                 contracts.map((contract, index) => {
                     return (
-                        <SingleContractCard contract={contract} index={index}/>
+                        <SingleContractCard contract={contract} key={index}/>
                     );
                 })}
         </div>
