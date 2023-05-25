@@ -1,0 +1,24 @@
+.ContractUpdater{
+    font-family: "Roboto";
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.ContractUpdater .item {
+    margin-bottom: 20px;
+}
+
+.ContractUpdater .MuiButtonBase-root.MuiButton-root {
+    border-radius: 10px;
+    font-family: "IBMPlexSans-Bold";
+    text-transform: none;
+}
+
+.ContractUpdater .MuiButtonBase-root.MuiButton-root.Mui-disabled {
+    background-color: #0000001f;
+}
+
+.ContractUpdater .add {
+    background-color: #007FFF;
+    width: 100%;
+}

@@ -41,9 +41,10 @@ const Contract: React.FC<ContractProps> = (props) => {
     const [disableAddContract, setDisableAddContract] = useState<boolean>(true);
 
     const inputProps = {
-        type: "number",
-        pattern: "[0-9]*",
-    };
+        type: "tel",
+        pattern: "[0-9]*\\.?[0-9]+",
+        inputmode: "decimal",
+      };
 
     useEffect(() => {
         if (

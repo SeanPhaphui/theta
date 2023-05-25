@@ -1,11 +1,6 @@
-.ContractAction {
-    display: flex;
-    justify-content: space-between;
-}
-
 .ContractAction .MuiButtonBase-root.MuiButton-root {
     border-radius: 10px;
-    font-family: "CustomFont";
+    font-family: "IBMPlexSans-Bold";
     text-transform: none;
 }
 

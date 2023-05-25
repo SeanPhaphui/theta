@@ -3,12 +3,12 @@ import advancedFormat from "dayjs/plugin/advancedFormat";
 import minMax from "dayjs/plugin/minMax";
 import React, { useEffect, useState } from "react";
 import { ContractObject } from "../Contract/Contract";
-import ContractCards from "../ContractCards/ContractCards";
 import ContractDialog from "../ContractDialog/ContractDialog";
 import { testContracts } from "../Utils/Utils";
 import "./ContractsPage.css";
 
 import DataManager from "../DataManager/DataManager";
+import ContractCardList from "../ContractCardList/ContractCardList";
 
 dayjs.extend(minMax);
 dayjs.extend(advancedFormat);
@@ -38,6 +38,17 @@ const ContractsPage: React.FC = () => {
         setContracts((prevArray) => [contracts, ...prevArray]);
     }
 
+    const updateTotalBuyBackPrice = (id: string, newPrice: number) => {
+        const updatedContracts = contracts.map(contract => {
+          if (contract.id === id) {
+            return { ...contract, totalBuyBackPrice: newPrice };
+          }
+          return contract;
+        });
+        setContracts(updatedContracts);
+        console.log(updatedContracts)
+      };
+      
     return (
         <div className="ContractsPage">
             <DataManager
@@ -49,7 +60,7 @@ const ContractsPage: React.FC = () => {
             <div className="title">{"since " + earliestStartDate?.format("MMMM Do")}</div>
             <div className="title">{"$" + totalReturn.toLocaleString()}</div>
             <ContractDialog onAddConract={contractsHandler} />
-            {contracts && <ContractCards contracts={contracts} />}
+            {contracts && <ContractCardList contracts={contracts} updateTotalBuyBackPrice={updateTotalBuyBackPrice}/>}
         </div>
     );
 };

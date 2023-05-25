@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Box, Card, Typography } from "@mui/material";
+import ScheduleIcon from "@mui/icons-material/Schedule";
+import {
+    Box,
+    Card,
+    Typography
+} from "@mui/material";
 import LinearProgress, {
     LinearProgressProps,
 } from "@mui/material/LinearProgress";
-import ScheduleIcon from "@mui/icons-material/Schedule";
-import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-import "./SingleContractCard.css";
-import { ContractObject } from "../../Contract/Contract";
+import React from "react";
 import {
     getContractStatus,
     getDaysCardStatus,
     getStatusColorVariation,
-    hasDayPassed,
-    timeProgress,
-} from "../../Utils/Utils";
+    timeProgress
+} from "../../../Utils/Utils";
+import "./ContractCard.css";
+import { ContractObject } from "../../../Contract/Contract";
 
-dayjs.extend(advancedFormat);
+
 
 function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number; status: string }
@@ -35,31 +36,27 @@ function LinearProgressWithLabel(
     );
 }
 
-dayjs.extend(advancedFormat);
-
-interface SingleContractCardProps {
+interface ContractCardProps {
     contract: ContractObject;
+    openDialog: () => void;
 }
 
-const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
-    console.log("RENDERD");
-    const { contract } = props;
-    function handleClick(event: React.MouseEvent<HTMLElement>): void {}
+const ContractCard: React.FC<ContractCardProps> = (props) => {
+    const { contract, openDialog } = props;
 
     const lostMoney = contract.totalBuyBackPrice > contract.totalSellPrice;
     const netReturn = Math.abs(
         contract.totalSellPrice - contract.totalBuyBackPrice
     );
 
-    const expired: boolean = hasDayPassed(dayjs(), contract.expireDate);
     const boughtBack: boolean = contract.totalBuyBackPrice > 0;
 
     const contractStatus: string = getContractStatus(contract);
     const statusColors = getStatusColorVariation(contractStatus);
 
     return (
-        <div className="SingleContractCard">
-            <Card className={contractStatus} onClick={handleClick}>
+        <div className="ContractCard">
+            <Card className={contractStatus} onClick={openDialog}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <ScheduleIcon />
                     <Typography
@@ -142,4 +139,4 @@ const SingleContractCard: React.FC<SingleContractCardProps> = (props) => {
     );
 };
 
-export default SingleContractCard;
+export default ContractCard;
