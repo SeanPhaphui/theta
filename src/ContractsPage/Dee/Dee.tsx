@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { ContractObject } from "../../Contract/Contract";
+import "./Dee.css";
 
 interface DeeProps {
     data: ContractObject[];
@@ -48,7 +49,9 @@ const Dee: React.FC<DeeProps> = ({ data }) => {
         const xAxis = d3
             .axisBottom(xScale)
             .tickFormat((d) => d3.timeFormat("%b %d")(d as Date));
-        const yAxis = d3.axisLeft(yScale);
+        const yAxis = d3
+            .axisLeft(yScale)
+            .tickFormat((d) => `$${d.toLocaleString()}`);
 
         svg.append("g")
             .attr("transform", `translate(0, ${height - margin.bottom})`)
@@ -73,12 +76,22 @@ const Dee: React.FC<DeeProps> = ({ data }) => {
             .attr("r", 5)
             .attr("fill", "steelblue")
             .on("mouseover", (event, d) => {
-                const tooltipContent = `${d.ticker}\n Return: $${(d.totalSellPrice - d.totalBuyBackPrice).toLocaleString()}`;
+                const tooltipContent = `${d.ticker}\n Return: $${(
+                    d.totalSellPrice - d.totalBuyBackPrice
+                ).toLocaleString()}`;
                 tooltip
                     .style("opacity", 1)
                     .html(tooltipContent)
-                    .style("left", event.pageX + 10 + "px")
-                    .style("top", event.pageY - 10 + "px");
+                    .style("left", Math.min(event.pageX, width - 0) + "px") // Limit tooltip to stay inside the graph
+                    .style("top", event.pageY - 10 + "px")
+                    .style("transform", "translate(-50%, -100%)")
+                    .style("background-color", "rgba(0, 0, 0, 0.8)")
+                    .style("color", "white")
+                    .style("padding", "8px")
+                    .style("border-radius", "4px")
+                    .style("font-size", "14px")
+                    .style("pointer-events", "none")
+                    .style("white-space", "pre");
             })
             .on("mouseout", () => {
                 tooltip.style("opacity", 0);
