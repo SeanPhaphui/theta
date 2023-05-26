@@ -38,6 +38,7 @@ const ContractCardList: React.FC<ContractCardsProps> = (props) => {
                     } else {
                         return (
                                     <ContractCardContainer
+                                        key={contract.id}
                                         contract={contract}
                                         updateTotalBuyBackPrice={
                                             updateTotalBuyBackPrice
