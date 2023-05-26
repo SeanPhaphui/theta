@@ -51,8 +51,8 @@ export const getStatusColorVariation = (status: string) => {
             };
         case 'gain':
             return {
-                main: '#B5F5B5', // replace with the main color for gain status
-                variant: '#8CE68C' // replace with the variant color for gain status
+                main: '#99FFCC', // replace with the main color for gain status
+                variant: '#66FF33' // replace with the variant color for gain status
             };
         default:
             return {
