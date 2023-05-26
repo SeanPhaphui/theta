@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
@@ -10,6 +10,7 @@ interface DeeProps {
 }
 
 const Dee: React.FC<DeeProps> = ({ data }) => {
+    const [showChart, setShowChart] = useState<boolean>(false);
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     useEffect(() => {
@@ -74,7 +75,7 @@ const Dee: React.FC<DeeProps> = ({ data }) => {
             .attr("cx", (d) => xScale(d.startDate.toDate()))
             .attr("cy", (d) => yScale(d.cumulativeReturn))
             .attr("r", 5)
-            .attr("fill", "steelblue")
+            .attr("fill", "#0059b2")
             .on("mouseover", (event, d) => {
                 const tooltipContent = `${d.ticker}\n Return: $${(
                     d.totalSellPrice - d.totalBuyBackPrice
@@ -105,12 +106,34 @@ const Dee: React.FC<DeeProps> = ({ data }) => {
         svg.append("path")
             .datum(cumulativeData)
             .attr("fill", "none")
-            .attr("stroke", "steelblue")
+            .attr("stroke", "#0059b2")
             .attr("stroke-width", 2)
             .attr("d", line);
-    }, [data]);
+    }, [data, showChart]);
 
-    return <svg ref={svgRef} style={{ width: "100%", height: "100%" }} />;
+    const handleChartToggle = () => {
+        setShowChart(!showChart);
+    };
+
+    return (
+        <div className="Dee">
+            <div className="chart-container">
+                <div className="chart-toggle">
+                    <button onClick={handleChartToggle}>
+                        {showChart ? "Hide Chart" : "Show Chart"}
+                    </button>
+                </div>
+                {showChart && (
+                    <div style={{ width: "100%", height: "50vh" }}>
+                        <svg
+                            ref={svgRef}
+                            style={{ width: "100%", height: "100%" }}
+                        />
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default Dee;

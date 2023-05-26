@@ -63,9 +63,7 @@ const ContractsPage: React.FC = () => {
             <div className="title">{"since " + earliestStartDate?.format("MMMM Do")}</div>
             <div className="title">{"$" + totalReturn.toLocaleString()}</div>
             <Graph contracts={contracts}/>
-            <div style={{ width: "100%", height: "50vh" }}>
-                <Dee data={contracts} />
-            </div>
+            <Dee data={contracts} />
             <ContractDialog onAddConract={contractsHandler} />
             {contracts && <ContractCardList contracts={contracts} updateTotalBuyBackPrice={updateTotalBuyBackPrice}/>}
         </div>
