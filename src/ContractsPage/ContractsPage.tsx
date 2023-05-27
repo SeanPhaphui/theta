@@ -51,6 +51,12 @@ const ContractsPage: React.FC = () => {
         console.log(updatedContracts);
     };
 
+    const deleteContract = (id: string) => {
+        const updatedContracts = contracts.filter((contract) => contract.id !== id);
+        setContracts(updatedContracts);
+        console.log(updatedContracts);
+      };
+
     return (
         <div className="ContractsPage">
             <DataManager
@@ -63,7 +69,7 @@ const ContractsPage: React.FC = () => {
             <div className="title">{"$" + totalReturn.toLocaleString()}</div>
             <D3ChartContainer data={contracts} />
             <ContractDialog onAddConract={contractsHandler} />
-            {contracts && <ContractCardList contracts={contracts} updateTotalBuyBackPrice={updateTotalBuyBackPrice}/>}
+            {contracts && <ContractCardList contracts={contracts} updateTotalBuyBackPrice={updateTotalBuyBackPrice} deleteContract={deleteContract}/>}
         </div>
     );
 };

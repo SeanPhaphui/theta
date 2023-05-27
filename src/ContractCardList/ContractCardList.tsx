@@ -8,10 +8,11 @@ import { Slide } from "@mui/material";
 interface ContractCardsProps {
     contracts: ContractObject[];
     updateTotalBuyBackPrice: (id: string, newPrice: number) => void;
+    deleteContract: (id: string) => void;
 }
 
 const ContractCardList: React.FC<ContractCardsProps> = (props) => {
-    const { contracts, updateTotalBuyBackPrice } = props;
+    const { contracts, updateTotalBuyBackPrice, deleteContract } = props;
 
     return (
         <div className="ContractCardList">
@@ -31,6 +32,7 @@ const ContractCardList: React.FC<ContractCardsProps> = (props) => {
                                         updateTotalBuyBackPrice={
                                             updateTotalBuyBackPrice
                                         }
+                                        deleteContract={deleteContract}
                                     />
                                 </div>
                             </Slide>
@@ -43,6 +45,7 @@ const ContractCardList: React.FC<ContractCardsProps> = (props) => {
                                         updateTotalBuyBackPrice={
                                             updateTotalBuyBackPrice
                                         }
+                                        deleteContract={deleteContract}
                                     />
                         ); // or any other fallback action
                     }

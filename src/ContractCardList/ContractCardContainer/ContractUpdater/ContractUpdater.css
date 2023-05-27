@@ -8,6 +8,11 @@
     margin-bottom: 20px;
 }
 
+.ContractUpdater .item-bottom {
+    display: flex;
+    margin-bottom: 20px;
+}
+
 .ContractUpdater .MuiButtonBase-root.MuiButton-root {
     border-radius: 10px;
     font-family: "IBMPlexSans-Bold";
@@ -18,7 +23,14 @@
     background-color: #0000001f;
 }
 
-.ContractUpdater .add {
+.ContractUpdater .item-bottom .add {
     background-color: #007FFF;
-    width: 100%;
+    flex-grow: 2;
+    margin-right: 5px;
+}
+
+.ContractUpdater .item-bottom .delete {
+    background: #f44336;
+    flex-grow: 1;
+    margin-left: 5px;
 }

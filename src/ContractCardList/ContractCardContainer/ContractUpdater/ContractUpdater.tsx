@@ -6,12 +6,11 @@ import "./ContractUpdater.css";
 interface ContractUpdaterProps {
     contract: ContractObject;
     updateTotalBuyBackPrice: (id: string, newPrice: number) => void;
+    deleteContract: (id: string) => void;
 }
 
-const ContractUpdater: React.FC<ContractUpdaterProps> = (
-    props
-) => {
-    const { contract, updateTotalBuyBackPrice } = props;
+const ContractUpdater: React.FC<ContractUpdaterProps> = (props) => {
+    const { contract, updateTotalBuyBackPrice, deleteContract } = props;
 
     const inputProps = {
         type: "number",
@@ -23,12 +22,20 @@ const ContractUpdater: React.FC<ContractUpdaterProps> = (
 
     const handlePriceUpdate = () => {
         if (!buyBackPrice) {
-          return;
+            return;
         }
-      
+
         const id = contract.id;
-        const totalBuyBackPrice = contract.optionCount > 1 ? buyBackPrice * contract.optionCount : buyBackPrice;
+        const totalBuyBackPrice =
+            contract.optionCount > 1
+                ? buyBackPrice * contract.optionCount
+                : buyBackPrice;
         updateTotalBuyBackPrice(id, totalBuyBackPrice);
+    };
+
+    const handleContractDeletion = () => {
+        const id = contract.id;
+        deleteContract(id);
       };
 
     useEffect(() => {
@@ -54,7 +61,7 @@ const ContractUpdater: React.FC<ContractUpdaterProps> = (
                 />
             </div>
             <div className="item">{"Quantity: " + contract.optionCount}</div>
-            <div className="item">
+            <div className="item-bottom">
                 <Button
                     className="add"
                     variant="contained"
@@ -62,6 +69,13 @@ const ContractUpdater: React.FC<ContractUpdaterProps> = (
                     onClick={handlePriceUpdate}
                 >
                     Update
+                </Button>
+                <Button
+                    className="delete"
+                    variant="contained"
+                    onClick={handleContractDeletion}
+                >
+                    Delete contract
                 </Button>
             </div>
         </div>
