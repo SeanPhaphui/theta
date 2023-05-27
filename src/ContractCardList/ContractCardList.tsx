@@ -17,39 +17,14 @@ const ContractCardList: React.FC<ContractCardsProps> = (props) => {
     return (
         <div className="ContractCardList">
             {contracts &&
-                contracts.map((contract, index) => {
-                    if (index == 0) {
-                        return (
-                            <Slide
-                                key={contract.id}
-                                direction="left"
-                                in={true}
-                                timeout={500}
-                            >
-                                <div>
-                                    <ContractCardContainer
-                                        contract={contract}
-                                        updateTotalBuyBackPrice={
-                                            updateTotalBuyBackPrice
-                                        }
-                                        deleteContract={deleteContract}
-                                    />
-                                </div>
-                            </Slide>
-                        );
-                    } else {
-                        return (
-                                    <ContractCardContainer
-                                        key={contract.id}
-                                        contract={contract}
-                                        updateTotalBuyBackPrice={
-                                            updateTotalBuyBackPrice
-                                        }
-                                        deleteContract={deleteContract}
-                                    />
-                        ); // or any other fallback action
-                    }
-                })}
+                contracts.map((contract) => (
+                    <ContractCardContainer
+                        key={contract.id}
+                        contract={contract}
+                        updateTotalBuyBackPrice={updateTotalBuyBackPrice}
+                        deleteContract={deleteContract}
+                    />
+                ))}
         </div>
     );
 };
