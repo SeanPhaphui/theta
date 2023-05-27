@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import minMax from "dayjs/plugin/minMax";
+import React, { useEffect, useState } from "react";
 import { ContractObject } from "../Contract/Contract";
 import ContractDialog from "../ContractDialog/ContractDialog";
 import { testContracts } from "../Utils/Utils";
 import "./ContractsPage.css";
 
-import DataManager from "../DataManager/DataManager";
 import ContractCardList from "../ContractCardList/ContractCardList";
-import Graph from "./Graph/Graph";
-import Dee from "./Dee/Dee";
+import DataManager from "../DataManager/DataManager";
+import D3ChartContainer from "./D3ChartContainer/D3ChartContainer";
 
 dayjs.extend(minMax);
 dayjs.extend(advancedFormat);
@@ -62,7 +61,7 @@ const ContractsPage: React.FC = () => {
             <div className="title">Total Return</div>
             <div className="title">{"since " + earliestStartDate?.format("MMMM Do")}</div>
             <div className="title">{"$" + totalReturn.toLocaleString()}</div>
-            <Dee data={contracts} />
+            <D3ChartContainer data={contracts} />
             <ContractDialog onAddConract={contractsHandler} />
             {contracts && <ContractCardList contracts={contracts} updateTotalBuyBackPrice={updateTotalBuyBackPrice}/>}
         </div>
