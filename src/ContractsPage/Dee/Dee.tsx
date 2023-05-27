@@ -18,6 +18,7 @@ const Dee: React.FC<DeeProps> = ({ data }) => {
     svg.selectAll("*").remove();
 
     const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
     const width = svgRef.current.clientWidth;
     const height = svgRef.current.clientHeight;
 
@@ -46,12 +47,13 @@ const Dee: React.FC<DeeProps> = ({ data }) => {
 
     const xAxis = d3
       .axisBottom(xScale)
+      .tickArguments([7])
       .tickFormat((d) => d3.timeFormat("%b %d")(d as Date));
     const yAxis = d3
       .axisLeft(yScale)
       .tickFormat((d) => `$${d.toLocaleString()}`);
 
-    svg.append("g")
+      svg.append("g")
       .attr("transform", `translate(0, ${height - margin.bottom})`)
       .call(xAxis);
 
