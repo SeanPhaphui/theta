@@ -55,7 +55,21 @@ const ContractsPage: React.FC = () => {
         const updatedContracts = contracts.filter((contract) => contract.id !== id);
         setContracts(updatedContracts);
         console.log(updatedContracts);
-      };
+    };
+
+    useEffect(() => {
+        const ContractCardList = document.querySelectorAll<HTMLElement>(".ContractCardList");
+        ContractCardList.forEach((cardBlock) => {
+            
+            Array.from(cardBlock.children).forEach((card, i) => {
+                const zIndex = cardBlock.children.length - i;
+                (card as HTMLElement).style.transform = `translateY(${i}px)`;
+                (card as HTMLElement).style.zIndex = `${zIndex}`;
+                (card as HTMLElement).style.bottom = `${Math.min(cardBlock.children.length +2, 75)}px`;
+            });
+        });
+    }, [contracts]);
+    
 
     return (
         <div className="ContractsPage">

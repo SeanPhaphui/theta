@@ -6,6 +6,7 @@ import {
 import { ContractObject } from "../../Contract/Contract";
 import ContractCard from "./ContractCard/ContractCard";
 import ContractUpdater from "./ContractUpdater/ContractUpdater";
+import './ContractCardContainer.css'
 
 interface ContractCardContainerProps {
     contract: ContractObject;
