@@ -84,7 +84,7 @@ export const testContracts: ContractObject[] = [
         expireDate: dayjs("2023-05-26"),
         totalSellPrice: 78,
         optionCount: 3,
-        totalBuyBackPrice: 66,
+        totalBuyBackPrice: 99,
     },
     {
         id: uuidv4(),
@@ -95,7 +95,7 @@ export const testContracts: ContractObject[] = [
         expireDate: dayjs("2023-04-28"),
         totalSellPrice: 271,
         optionCount: 1,
-        totalBuyBackPrice: 0,
+        totalBuyBackPrice: 100,
     },
     {
         id: uuidv4(),
@@ -106,6 +106,6 @@ export const testContracts: ContractObject[] = [
         expireDate: dayjs("2023-04-28"),
         totalSellPrice: 410,
         optionCount: 1,
-        totalBuyBackPrice: 500,
+        totalBuyBackPrice: 200,
     },
 ];
