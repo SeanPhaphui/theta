@@ -10,14 +10,20 @@ import "./ContractsPage.css";
 import ContractCardList from "../ContractCardList/ContractCardList";
 import DataManager from "../DataManager/DataManager";
 import D3ChartContainer from "./D3ChartContainer/D3ChartContainer";
+import { Button, Snackbar } from "@mui/material";
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 dayjs.extend(minMax);
 dayjs.extend(advancedFormat);
 
 const ContractsPage: React.FC = () => {
+    const [open, setOpen] = React.useState(false);
+    const [contractId, setContractId] = useState<string>("");
     const [contracts, setContracts] = useState<ContractObject[]>(testContracts);
     const [earliestStartDate, setEarliestStartDate] = useState<Dayjs | null>(null);
     const [totalReturn, setTotalReturn] = useState<number>(0);
+
 
     useEffect(() => {
         const startDateArray = contracts.map((contract) => contract.startDate);
@@ -35,9 +41,11 @@ const ContractsPage: React.FC = () => {
         setTotalReturn(totalSellPrice);
     }, [contracts]);
 
-    function contractsHandler(contracts: ContractObject): void {
+    function contractsHandler(contract: ContractObject): void {
         console.log("ADD MORE CONTRACTS");
-        setContracts((prevArray) => [contracts, ...prevArray]);
+        setContracts((prevArray) => [contract, ...prevArray]);
+        setContractId(contract.id);
+        setOpen(true);
     }
 
     const updateTotalBuyBackPrice = (id: string, newPrice: number) => {
@@ -69,7 +77,37 @@ const ContractsPage: React.FC = () => {
             });
         });
     }, [contracts]);
+
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
     
+        setOpen(false);
+    };
+
+    const handleUndo = () => {
+        const updatedContracts = contracts.filter((contract) => contract.id !== contractId);
+        setContracts(updatedContracts);
+        console.log(updatedContracts);
+        setOpen(false);
+    };
+
+    const action = (
+        <React.Fragment>
+          <Button color="secondary" size="small" onClick={handleUndo}>
+            UNDO
+          </Button>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+    );
 
     return (
         <div className="ContractsPage">
@@ -84,6 +122,13 @@ const ContractsPage: React.FC = () => {
             <D3ChartContainer data={contracts} />
             <ContractDialog onAddConract={contractsHandler} />
             {contracts && <ContractCardList contracts={contracts} updateTotalBuyBackPrice={updateTotalBuyBackPrice} deleteContract={deleteContract}/>}
+            <Snackbar
+                open={open}
+                autoHideDuration={4000}
+                onClose={handleClose}
+                message="Contract added"
+                action={action}
+            />
         </div>
     );
 };
