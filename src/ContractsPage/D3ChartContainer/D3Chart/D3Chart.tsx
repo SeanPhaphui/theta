@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { ContractObject } from "../../../Contract/Contract";
 import "./D3Chart.css";
 import * as d3 from "d3";
+import { hasDayPassed } from "../../../Utils/Utils";
+import dayjs from "dayjs";
 
 interface D3ChartProps {
   data: ContractObject[];
@@ -67,18 +69,89 @@ const D3Chart: React.FC<D3ChartProps> = ({ data }) => {
         .style("opacity", 0)
         .style("position", "absolute");
 
-      svg.selectAll("circle")
+
+
+      const line = d3
+        .line<(typeof cumulativeData)[0]>()
+        .x((d) => xScale(d.startDate.toDate()) || 0)
+        .y((d) => yScale(d.cumulativeReturn) || 0);
+
+      const defs = svg.append("defs");
+
+      const gradientBlue = defs
+        .append("linearGradient")
+        .attr("id", "stroke-gradient-blue")
+        .attr("gradientUnits", "userSpaceOnUse")
+        .attr("x1", 0)
+        .attr("y1", yScale(0))
+        .attr("x2", width)
+        .attr(
+          "y2",
+          yScale(d3.max(cumulativeData, (d) => d.cumulativeReturn)!)
+        );
+
+      gradientBlue.append("stop").attr("offset", "0%").attr("stop-color", "#007fff");
+
+      gradientBlue.append("stop").attr("offset", "120%").attr("stop-color", "#0059b2");
+
+      const gradientGreen = defs
+      .append("linearGradient")
+      .attr("id", "stroke-gradient-green")
+      .attr("gradientUnits", "userSpaceOnUse")
+      .attr("x1", 0)
+      .attr("y1", yScale(0))
+      .attr("x2", width)
+      .attr(
+        "y2",
+        yScale(d3.max(cumulativeData, (d) => d.cumulativeReturn)!)
+      );
+
+      gradientGreen.append("stop").attr("offset", "0%").attr("stop-color", "#38c731");
+
+      gradientGreen.append("stop").attr("offset", "120%").attr("stop-color", "#008000");
+
+      const gradientRed = defs
+      .append("linearGradient")
+      .attr("id", "stroke-gradient-red")
+      .attr("gradientUnits", "userSpaceOnUse")
+      .attr("x1", 0)
+      .attr("y1", yScale(0))
+      .attr("x2", width)
+      .attr(
+        "y2",
+        yScale(d3.max(cumulativeData, (d) => d.cumulativeReturn)!)
+      );
+
+      gradientRed.append("stop").attr("offset", "0%").attr("stop-color", "#FF4500");
+
+      gradientRed.append("stop").attr("offset", "120%").attr("stop-color", "#8B0000");
+
+
+      const colors = ["blue", "green", "red"];
+
+      cumulativeData.forEach((d, i) => {
+        const segmentColor = getCircleFill(cumulativeData[i + 1]);
+        
+        svg.append("path")
+          .datum(cumulativeData.slice(i, i+2))
+          .attr("fill", "none")
+          .attr("stroke", segmentColor)
+          .attr("stroke-width", 2)
+          .attr("d", line);
+      });
+
+        svg.selectAll("circle")
         .data(cumulativeData)
         .join("circle")
         .attr("cx", (d) => xScale(d.startDate.toDate()))
         .attr("cy", (d) => yScale(d.cumulativeReturn))
         .attr("r", 5)
-        .attr("fill", "url(#stroke-gradient)")
+        .attr("fill", (d) => getCircleFill(d))
         .on("mouseover", (event, d) => {
           const lostMoney = d.totalBuyBackPrice > d.totalSellPrice;
           const netReturn = Math.abs(d.totalSellPrice - d.totalBuyBackPrice);
 
-          const tooltipContent = `${d.ticker}\n Return: ${
+          const tooltipContent = `${d.ticker + " " + d.strikePrice + " " + d.optionType}\n Return: ${
             lostMoney ? "-$" + netReturn : "+$" + netReturn
           }`;
 
@@ -99,40 +172,25 @@ const D3Chart: React.FC<D3ChartProps> = ({ data }) => {
         .on("mouseout", () => {
           tooltip.style("opacity", 0);
         });
-
-      const line = d3
-        .line<(typeof cumulativeData)[0]>()
-        .x((d) => xScale(d.startDate.toDate()) || 0)
-        .y((d) => yScale(d.cumulativeReturn) || 0);
-
-      const defs = svg.append("defs");
-
-      const gradient = defs
-        .append("linearGradient")
-        .attr("id", "stroke-gradient")
-        .attr("gradientUnits", "userSpaceOnUse")
-        .attr("x1", 0)
-        .attr("y1", yScale(0))
-        .attr("x2", width)
-        .attr(
-          "y2",
-          yScale(d3.max(cumulativeData, (d) => d.cumulativeReturn)!)
-        );
-
-      gradient.append("stop").attr("offset", "0%").attr("stop-color", "#007fff");
-
-      gradient.append("stop").attr("offset", "120%").attr("stop-color", "#0059b2");
-
-      svg.append("path")
-        .datum(cumulativeData)
-        .attr("fill", "none")
-        .attr("stroke", "url(#stroke-gradient)")
-        .attr("stroke-width", 2)
-        .attr("d", line);
     };
 
     createChart();
   }, [data]);
+
+  const getCircleFill = (d:any) => {
+    const expired = d && d.expireDate && hasDayPassed(dayjs(), d.expireDate);
+    const boughtBack = d && d.totalBuyBackPrice > 0;
+    const lostMoney = d && d.totalBuyBackPrice > d.totalSellPrice;
+  
+    if (boughtBack && lostMoney) {
+      return "url(#stroke-gradient-red)";
+    } else if ((boughtBack || expired) && !lostMoney) {
+      return "url(#stroke-gradient-green)";
+    } else {
+      return "url(#stroke-gradient-blue)";
+    }
+  };
+  
 
   return (
     <div style={{ width: "100%", height: "50vh" }}>
