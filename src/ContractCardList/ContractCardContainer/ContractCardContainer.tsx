@@ -11,12 +11,12 @@ import './ContractCardContainer.css'
 interface ContractCardContainerProps {
     contract: ContractObject;
     viewStyle: boolean;
-    updateTotalBuyBackPrice: (id: string, newPrice: number) => void;
+    updateContract: (contract: ContractObject) => void;
     deleteContract: (id: string) => void;
 }
 
 const ContractCardContainer: React.FC<ContractCardContainerProps> = (props) => {
-    const { contract, viewStyle, updateTotalBuyBackPrice, deleteContract } = props;
+    const { contract, viewStyle, updateContract, deleteContract } = props;
 
     const [open, setOpen] = React.useState(false);
 
@@ -28,8 +28,8 @@ const ContractCardContainer: React.FC<ContractCardContainerProps> = (props) => {
         setOpen(false);
     };
 
-    const handlePriceUpdate = (id: string, newPrice: number) => {
-        updateTotalBuyBackPrice(id, newPrice);
+    const handleContractUpdate = (contract: ContractObject) => {
+        updateContract(contract);
         setOpen(false);
       };
 
@@ -40,7 +40,7 @@ const ContractCardContainer: React.FC<ContractCardContainerProps> = (props) => {
             <ContractCard contract={contract} viewStyle={viewStyle} openDialog={handleClickOpen}/>
             <Dialog onClose={handleClose} open={open}>
                 <DialogTitle>{contract.ticker + " " + contract.strikePrice + " " + contract.optionType}</DialogTitle>
-                <ContractUpdater contract={contract} updateTotalBuyBackPrice={handlePriceUpdate} deleteContract={deleteContract}/>
+                <ContractUpdater contract={contract} updateContract={handleContractUpdate} deleteContract={deleteContract}/>
             </Dialog>
         </div>
     );

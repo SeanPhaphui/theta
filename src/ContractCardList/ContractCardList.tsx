@@ -8,12 +8,12 @@ import { Slide } from "@mui/material";
 interface ContractCardsProps {
     contracts: ContractObject[];
     viewStyle: boolean;
-    updateTotalBuyBackPrice: (id: string, newPrice: number) => void;
+    updateContract: (contract: ContractObject) => void;
     deleteContract: (id: string) => void;
 }
 
 const ContractCardList: React.FC<ContractCardsProps> = (props) => {
-    const { contracts, viewStyle, updateTotalBuyBackPrice, deleteContract } = props;
+    const { contracts, viewStyle, updateContract, deleteContract } = props;
 
     return (
         <div className="ContractCardList">
@@ -23,7 +23,7 @@ const ContractCardList: React.FC<ContractCardsProps> = (props) => {
                         key={contract.id}
                         contract={contract}
                         viewStyle={viewStyle}
-                        updateTotalBuyBackPrice={updateTotalBuyBackPrice}
+                        updateContract={updateContract}
                         deleteContract={deleteContract}
                     />
                 ))}

@@ -49,10 +49,10 @@ const ContractsPage: React.FC = () => {
         setOpen(true);
     }
 
-    const updateTotalBuyBackPrice = (id: string, newPrice: number) => {
+    const updateContract = (updatedContract: ContractObject) => {
         const updatedContracts = contracts.map((contract) => {
-            if (contract.id === id) {
-                return { ...contract, totalBuyBackPrice: newPrice };
+            if (contract.id === updatedContract.id) {
+                return updatedContract;
             }
             return contract;
         });
@@ -137,6 +137,27 @@ const ContractsPage: React.FC = () => {
     );
 
     const toggleView = () => setIs3D(!is3D);
+
+    // Then, in a useEffect hook, you can load the value from localStorage
+    // when the component first mounts.
+    useEffect(() => {
+        const storedContracts = localStorage.getItem('Contracts');
+        if (storedContracts) {
+          let contracts: ContractObject[] = JSON.parse(storedContracts);
+          contracts = contracts.map(contract => ({
+            ...contract,
+            startDate: dayjs(contract.startDate),
+            expireDate: dayjs(contract.expireDate)
+          }));
+          setContracts(contracts);
+        }
+      }, []);
+
+    // You can also use another useEffect to save the value to localStorage
+    // whenever it changes.   
+    useEffect(() => {
+        localStorage.setItem('Contracts', JSON.stringify(contracts));
+    }, [contracts]);
     
     return (
         <div className="ContractsPage">
@@ -153,7 +174,7 @@ const ContractsPage: React.FC = () => {
             <div className="title">{"$" + totalReturn.toLocaleString()}</div>
             <D3ChartContainer data={contracts} />
             <ContractDialog onAddConract={contractsHandler} />
-            {contracts && <ContractCardList contracts={contracts} updateTotalBuyBackPrice={updateTotalBuyBackPrice} deleteContract={deleteContract} viewStyle={is3D}/>}
+            {contracts && <ContractCardList contracts={contracts} updateContract={updateContract} deleteContract={deleteContract} viewStyle={is3D}/>}
             <Snackbar
                 open={open}
                 autoHideDuration={4000}

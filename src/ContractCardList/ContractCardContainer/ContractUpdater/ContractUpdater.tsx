@@ -2,41 +2,46 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { ContractObject } from "../../../Contract/Contract";
 import "./ContractUpdater.css";
+import OptionCounter from "../../../Contract/OptionCounter/OptionCounter";
 
 interface ContractUpdaterProps {
     contract: ContractObject;
-    updateTotalBuyBackPrice: (id: string, newPrice: number) => void;
+    updateContract: (contract: ContractObject) => void;
     deleteContract: (id: string) => void;
 }
 
 const ContractUpdater: React.FC<ContractUpdaterProps> = (props) => {
-    const { contract, updateTotalBuyBackPrice, deleteContract } = props;
+    const { contract, updateContract, deleteContract } = props;
 
     const inputProps = {
         type: "number",
         pattern: "[0-9]*",
     };
 
-    const [buyBackPrice, setBuyBackPrice] = useState<number>();
+    const [buyBackPrice, setBuyBackPrice] = useState<number>(0);
+    const [optionCount, setOptionCount] = useState<number>(
+        contract.optionCount
+    );
     const [disabled, setDisabled] = useState<boolean>(true);
 
-    const handlePriceUpdate = () => {
-        if (!buyBackPrice) {
-            return;
-        }
+    const handleContractUpdate = () => {
+        const updatedTotalSellPrice = (contract.totalSellPrice / contract.optionCount) * optionCount
 
-        const id = contract.id;
-        const totalBuyBackPrice =
-            contract.optionCount > 1
-                ? buyBackPrice * contract.optionCount
-                : buyBackPrice;
-        updateTotalBuyBackPrice(id, totalBuyBackPrice);
+        const totalBuyBackPrice = optionCount > 1 ? buyBackPrice * optionCount : buyBackPrice;
+        const updatedContract: ContractObject = {
+            ...contract, // Copy all properties from the original object
+            // Update the desired properties
+            totalSellPrice: updatedTotalSellPrice,
+            optionCount: optionCount,
+            totalBuyBackPrice: totalBuyBackPrice,
+        };
+        updateContract(updatedContract);
     };
 
     const handleContractDeletion = () => {
         const id = contract.id;
         deleteContract(id);
-      };
+    };
 
     useEffect(() => {
         if (buyBackPrice) {
@@ -45,6 +50,12 @@ const ContractUpdater: React.FC<ContractUpdaterProps> = (props) => {
             setDisabled(true);
         }
     }, [buyBackPrice]);
+
+    useEffect(() => {
+        if (optionCount !== contract.optionCount) {
+          setDisabled(false); // Set disabled to false when optionCount changes
+        }
+      }, [optionCount, contract.optionCount]);
 
     return (
         <div className="ContractUpdater">
@@ -60,13 +71,20 @@ const ContractUpdater: React.FC<ContractUpdaterProps> = (props) => {
                     }
                 />
             </div>
-            <div className="item">{"Quantity: " + contract.optionCount}</div>
+            <div className="item">
+                <OptionCounter
+                    optionCount={contract.optionCount}
+                    onOptionCountChange={(optionCount: number) =>
+                        setOptionCount(optionCount)
+                    }
+                />
+            </div>
             <div className="item-bottom">
                 <Button
                     className="add"
                     variant="contained"
                     disabled={disabled}
-                    onClick={handlePriceUpdate}
+                    onClick={handleContractUpdate}
                 >
                     Update
                 </Button>

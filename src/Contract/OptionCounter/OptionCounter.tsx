@@ -5,13 +5,14 @@ import React, { useState } from "react";
 import "./OptionCounter.css";
 
 interface OptionCounterProps {
+    optionCount?: number;
     onOptionCountChange: (optionCount: number) => void;
 }
 
 const OptionCounter: React.FC<OptionCounterProps> = (props) => {
-    const { onOptionCountChange } = props;
+    const { optionCount, onOptionCountChange } = props;
 
-    const [count, setCount] = useState<number>(1);
+    const [count, setCount] = useState<number>(optionCount ? optionCount : 1);
 
     return (
         <div className="OptionCounter">
