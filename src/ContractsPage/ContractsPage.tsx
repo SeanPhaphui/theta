@@ -18,6 +18,7 @@ dayjs.extend(minMax);
 dayjs.extend(advancedFormat);
 
 const ContractsPage: React.FC = () => {
+    const [is3D, setIs3D] = useState(false);
     const [open, setOpen] = React.useState(false);
     const [contractId, setContractId] = useState<string>("");
     const [contracts, setContracts] = useState<ContractObject[]>(testContracts);
@@ -76,7 +77,33 @@ const ContractsPage: React.FC = () => {
                 (card as HTMLElement).style.bottom = `${Math.min(cardBlock.children.length +2, 75)}px`;
             });
         });
-    }, [contracts]);
+        if (is3D) {
+            const contractCards = document.querySelectorAll('.ContractCard3D');
+    
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('flattened');
+                    } else {
+                        entry.target.classList.remove('flattened');
+                    }
+                });
+            }, { 
+                rootMargin: '1000% 0px -35% 0px', // Adjust as per your need.  GOOD FOR OG
+                threshold: 0.1 
+            }); 
+        
+            contractCards.forEach(card => {
+                observer.observe(card);
+            });
+        
+            return () => {
+                contractCards.forEach(card => {
+                    observer.unobserve(card);
+                });
+            };
+        }
+    }, [contracts, is3D]);
 
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -109,6 +136,8 @@ const ContractsPage: React.FC = () => {
         </React.Fragment>
     );
 
+    const toggleView = () => setIs3D(!is3D);
+    
     return (
         <div className="ContractsPage">
             <DataManager
@@ -116,12 +145,15 @@ const ContractsPage: React.FC = () => {
                 restoreContracts={(contracts) => setContracts(contracts)}
                 clearContracts={() => setContracts([])}
             />
+            <button onClick={toggleView}>
+                {is3D ? "3D Cards" : "2D Cards"}
+            </button>
             <div className="title">Total Return</div>
             <div className="title">{"since " + earliestStartDate?.format("MMMM Do")}</div>
             <div className="title">{"$" + totalReturn.toLocaleString()}</div>
             <D3ChartContainer data={contracts} />
             <ContractDialog onAddConract={contractsHandler} />
-            {contracts && <ContractCardList contracts={contracts} updateTotalBuyBackPrice={updateTotalBuyBackPrice} deleteContract={deleteContract}/>}
+            {contracts && <ContractCardList contracts={contracts} updateTotalBuyBackPrice={updateTotalBuyBackPrice} deleteContract={deleteContract} viewStyle={is3D}/>}
             <Snackbar
                 open={open}
                 autoHideDuration={4000}

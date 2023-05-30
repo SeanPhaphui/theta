@@ -1,3 +1,13 @@
+.ContractCard3D {
+    transform: rotateX(60deg);
+    transform-origin: top center;
+    transition: transform 0.3s ease-in-out; /* Adjust timing as needed */
+}
+
+.ContractCard3D.flattened {
+    transform: rotateX(0);
+}
+
 .MuiPaper-root.MuiCard-root {
     padding: 25px;
     border-radius: 10px;

@@ -38,11 +38,12 @@ function LinearProgressWithLabel(
 
 interface ContractCardProps {
     contract: ContractObject;
+    viewStyle: boolean;
     openDialog: () => void;
 }
 
 const ContractCard: React.FC<ContractCardProps> = (props) => {
-    const { contract, openDialog } = props;
+    const { contract, viewStyle, openDialog } = props;
 
     const lostMoney = contract.totalBuyBackPrice > contract.totalSellPrice;
     const netReturn = Math.abs(
@@ -54,8 +55,10 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
     const contractStatus: string = getContractStatus(contract);
     const statusColors = getStatusColorVariation(contractStatus);
 
+    let cardClassName = viewStyle ? "ContractCard3D" : "ContractCard2D";
+
     return (
-        <div className="ContractCard">
+        <div className={cardClassName}>
             <Card className={contractStatus} onClick={openDialog}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <ScheduleIcon />
