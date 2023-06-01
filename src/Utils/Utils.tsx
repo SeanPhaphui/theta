@@ -62,6 +62,34 @@ export const getStatusColorVariation = (status: string) => {
     }
 }
 
+const getOption = async (url: string) => {
+    const response = await fetch(url);
+    return response.json();
+};
+
+const buildStringFromContract = (contract: ContractObject): string => {
+    const { ticker, optionType, strikePrice, expireDate } = contract;
+    const formattedDate = expireDate.format('YYMMDD');
+    const formattedOptionType = optionType.charAt(0).toUpperCase(); 
+    const formattedStrikePrice = (Number(strikePrice.slice(1)) * 1000).toString().padStart(8, '0');
+
+    return `${ticker}${formattedDate}${formattedOptionType}${formattedStrikePrice}`;
+};
+
+export const getContractMarketPrice = async (contract: ContractObject): Promise<number> => {
+    const stringContract = buildStringFromContract(contract);
+
+    const proxyUrl = "https://corsproxy.io/?";
+    const stonksUrl = `${proxyUrl}https://query1.finance.yahoo.com/v7/finance/options/${stringContract}`;
+
+    const data = await getOption(stonksUrl);
+    const output = data.optionChain.result[0];
+    if(output == undefined){
+        return 0;
+    }
+    const regularMarketPrice = output.quote.regularMarketPrice * 100;
+    return regularMarketPrice;
+};
 
 export const testContracts: ContractObject[] = [
     {

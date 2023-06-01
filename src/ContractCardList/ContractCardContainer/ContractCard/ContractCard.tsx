@@ -1,40 +1,16 @@
 import ScheduleIcon from "@mui/icons-material/Schedule";
+import { Box, Card, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { ContractObject } from "../../../Contract/Contract";
 import {
-    Box,
-    Card,
-    Typography
-} from "@mui/material";
-import LinearProgress, {
-    LinearProgressProps,
-} from "@mui/material/LinearProgress";
-import React from "react";
-import {
+    getContractMarketPrice,
     getContractStatus,
     getDaysCardStatus,
     getStatusColorVariation,
     timeProgress
 } from "../../../Utils/Utils";
 import "./ContractCard.css";
-import { ContractObject } from "../../../Contract/Contract";
-
-
-
-function LinearProgressWithLabel(
-    props: LinearProgressProps & { value: number; status: string }
-) {
-    return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Box sx={{ width: "100%", mr: 1 }}>
-                <LinearProgress variant="determinate" {...props} />
-            </Box>
-            <Box sx={{ minWidth: 35 }}>
-                <Typography variant="body2" color={props.status}>{`${Math.round(
-                    props.value
-                )}%`}</Typography>
-            </Box>
-        </Box>
-    );
-}
+import LinearProgressWithLabel from "./LinearProgressWithLabel/LinearProgressWithLabel";
 
 interface ContractCardProps {
     contract: ContractObject;
@@ -56,6 +32,42 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
     const statusColors = getStatusColorVariation(contractStatus);
 
     let cardClassName = viewStyle ? "ContractCard3D" : "ContractCard2D";
+
+    const [regularMarketPrice, setRegularMarketPrice] = useState<number>(0);
+    const [percentage, setPercentage] = useState(0);
+    const [ret, setRet] = useState("");
+
+    useEffect(() => {
+      if (contractStatus === "active") {
+        getContractMarketPrice(contract).then(setRegularMarketPrice);
+        console.log("use")
+      }
+    }, [contractStatus, contract]);
+
+    const getPercentage = () => {
+        const sellPrice = contract.totalSellPrice / contract.optionCount;
+        let perc = Math.round(((sellPrice - regularMarketPrice) / sellPrice) * 100);
+        if (perc > 100) {
+            perc = 100;
+        }
+        setPercentage(perc);
+    };
+
+    const getReturn = () => {
+        const sellPrice = contract.totalSellPrice / contract.optionCount;
+        const re = Math.round((sellPrice - regularMarketPrice) * contract.optionCount);
+        const absRe = Math.abs(re);
+        if (re > 0){
+            setRet(`+$${absRe}`);
+        } else {
+            setRet(`-$${absRe}`);
+        }
+    };
+
+    useEffect(() => {
+      getPercentage();
+      getReturn();
+    }, [regularMarketPrice]);
 
     return (
         <div className={cardClassName}>
@@ -109,15 +121,36 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
                             alignItems: "center",
                         }}
                     >
-                        <Typography
+                        <Box
                             sx={{
-                                fontSize: "16px",
-                                fontFamily: "IBMPlexSans-Medium",
-                                mr: "5px",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
                             }}
                         >
-                            {lostMoney ? "-$" + netReturn : "+$" + netReturn}
-                        </Typography>
+                            <Typography
+                                sx={{
+                                    fontSize: "16px",
+                                    fontFamily: "IBMPlexSans-Medium",
+                                    mr: "5px",
+                                }}
+                            >
+                                {lostMoney
+                                    ? "-$" + netReturn
+                                    : "+$" + netReturn}
+                            </Typography>
+                            {contractStatus === "active" && <Typography
+                                sx={{
+                                    fontSize: "16px",
+                                    fontFamily: "IBMPlexSans-Medium",
+                                    color: statusColors.main,
+                                    mr: "5px",
+                                }}
+                            >
+                                {ret}
+                            </Typography>}
+                        </Box>
+
                         <Typography
                             sx={{
                                 fontSize: "14px",
@@ -136,7 +169,15 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
                         contract.expireDate
                     )}
                     status={statusColors.variant}
+                    lineColor="white"
                 />
+                {contractStatus === "active" && (
+                    <LinearProgressWithLabel
+                        value={percentage}
+                        status={statusColors.variant}
+                        lineColor="green"
+                    />
+                )}
             </Card>
         </div>
     );

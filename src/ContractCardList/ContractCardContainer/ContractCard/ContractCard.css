@@ -34,12 +34,3 @@
     font-size: 1rem !important;
 }
 
-.MuiLinearProgress-bar {
-    background-color: white !important;
-    border-radius: 100px;
-}
-
-.MuiLinearProgress-root {
-    background-color: rgba(255, 255, 255, 0.12) !important;
-    border-radius: 100px;
-}

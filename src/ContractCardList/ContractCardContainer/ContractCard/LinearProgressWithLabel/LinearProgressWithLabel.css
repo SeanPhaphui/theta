@@ -1,0 +1,14 @@
+.LinearProgressWithLabel .MuiLinearProgress-root {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-radius: 100px;
+}
+
+.LinearProgressWithLabel .MuiLinearProgress-root.white .MuiLinearProgress-bar {
+    background-color: white !important;
+    border-radius: 100px;
+}
+
+.LinearProgressWithLabel .MuiLinearProgress-root.green .MuiLinearProgress-bar {
+    background-color: #00B275 !important;
+    border-radius: 100px;
+}
