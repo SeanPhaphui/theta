@@ -7,7 +7,7 @@ import {
     getContractStatus,
     getDaysCardStatus,
     getStatusColorVariation,
-    timeProgress
+    timeProgress,
 } from "../../../Utils/Utils";
 import "./ContractCard.css";
 import LinearProgressWithLabel from "./LinearProgressWithLabel/LinearProgressWithLabel";
@@ -37,6 +37,18 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
     const [percentage, setPercentage] = useState(0);
     const [ret, setRet] = useState("");
 
+    const getClosePercentage = () => {
+        let perc = Math.round(
+            ((contract.totalSellPrice - contract.totalBuyBackPrice) /
+                contract.totalSellPrice) *
+                100
+        );
+        if (perc > 100) {
+            perc = 100;
+        }
+        return perc;
+    };
+
     useEffect(() => {
       if (contractStatus === "active") {
         getContractMarketPrice(contract).then(setRegularMarketPrice);
@@ -46,7 +58,9 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
 
     const getPercentage = () => {
         const sellPrice = contract.totalSellPrice / contract.optionCount;
-        let perc = Math.round(((sellPrice - regularMarketPrice) / sellPrice) * 100);
+        let perc = Math.round(
+            ((sellPrice - regularMarketPrice) / sellPrice) * 100
+        );
         if (perc > 100) {
             perc = 100;
         }
@@ -55,9 +69,11 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
 
     const getReturn = () => {
         const sellPrice = contract.totalSellPrice / contract.optionCount;
-        const re = Math.round((sellPrice - regularMarketPrice) * contract.optionCount);
+        const re = Math.round(
+            (sellPrice - regularMarketPrice) * contract.optionCount
+        );
         const absRe = Math.abs(re);
-        if (re > 0){
+        if (re > 0) {
             setRet(`+$${absRe}`);
         } else {
             setRet(`-$${absRe}`);
@@ -65,8 +81,8 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
     };
 
     useEffect(() => {
-      getPercentage();
-      getReturn();
+        getPercentage();
+        getReturn();
     }, [regularMarketPrice]);
 
     return (
@@ -139,16 +155,18 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
                                     ? "-$" + netReturn
                                     : "+$" + netReturn}
                             </Typography>
-                            {contractStatus === "active" && <Typography
-                                sx={{
-                                    fontSize: "16px",
-                                    fontFamily: "IBMPlexSans-Medium",
-                                    color: statusColors.main,
-                                    mr: "5px",
-                                }}
-                            >
-                                {ret}
-                            </Typography>}
+                            {contractStatus === "active" && (
+                                <Typography
+                                    sx={{
+                                        fontSize: "16px",
+                                        fontFamily: "IBMPlexSans-Medium",
+                                        color: statusColors.main,
+                                        mr: "5px",
+                                    }}
+                                >
+                                    {ret}
+                                </Typography>
+                            )}
                         </Box>
 
                         <Typography
@@ -163,14 +181,23 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
                         </Typography>
                     </Box>
                 </Box>
-                <LinearProgressWithLabel
-                    value={timeProgress(
-                        contract.startDate,
-                        contract.expireDate
-                    )}
-                    status={statusColors.variant}
-                    lineColor="white"
-                />
+                {contractStatus === "active" ? (
+                    <LinearProgressWithLabel
+                        value={timeProgress(
+                            contract.startDate,
+                            contract.expireDate
+                        )}
+                        status={statusColors.variant}
+                        lineColor="white"
+                    />
+                ) : (
+                    <LinearProgressWithLabel
+                        value={getClosePercentage()}
+                        status={statusColors.variant}
+                        lineColor="white"
+                    />
+                )}
+
                 {contractStatus === "active" && (
                     <LinearProgressWithLabel
                         value={percentage}
