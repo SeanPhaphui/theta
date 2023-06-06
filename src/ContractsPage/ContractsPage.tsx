@@ -24,6 +24,7 @@ const ContractsPage: React.FC = () => {
     const [contracts, setContracts] = useState<ContractObject[]>(testContracts);
     const [earliestStartDate, setEarliestStartDate] = useState<Dayjs | null>(null);
     const [totalReturn, setTotalReturn] = useState<number>(0);
+    const [averageMonthlyReturn, setAverageMonthlyReturn] = useState<number>(0);
 
 
     useEffect(() => {
@@ -40,6 +41,15 @@ const ContractsPage: React.FC = () => {
             0
         );
         setTotalReturn(totalSellPrice);
+          // Calculate average monthly return
+        if (earliestDate && contracts.length > 0) {
+            const totalMonths = dayjs(contracts[0].startDate).diff(earliestDate, 'month');
+            const avgMonthlyReturn = totalSellPrice / totalMonths;
+            console.log("contracts[0].startDate: ", contracts[0].startDate)
+            console.log("totalMonths: ", totalMonths)
+            console.log("avgMonthlyReturn: ", avgMonthlyReturn)
+            setAverageMonthlyReturn(avgMonthlyReturn);
+        }
     }, [contracts]);
 
     function contractsHandler(contract: ContractObject): void {
