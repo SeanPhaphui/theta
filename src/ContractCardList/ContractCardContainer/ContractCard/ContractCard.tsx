@@ -6,11 +6,11 @@ import {
     getContractMarketPrice,
     getContractStatus,
     getDaysCardStatus,
-    getStatusColorVariation,
+    getCardTextColors,
     timeProgress,
 } from "../../../Utils/Utils";
 import "./ContractCard.css";
-import LinearProgressWithLabel from "./LinearProgressWithLabel/LinearProgressWithLabel";
+import LinearProgressWithLabel, { LinearLineColor } from "./LinearProgressWithLabel/LinearProgressWithLabel";
 
 interface ContractCardProps {
     contract: ContractObject;
@@ -29,7 +29,7 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
     const boughtBack: boolean = contract.totalBuyBackPrice > 0;
 
     const contractStatus: string = getContractStatus(contract);
-    const statusColors = getStatusColorVariation(contractStatus);
+    const cardTextColors = getCardTextColors(contractStatus);
 
     let cardClassName = viewStyle ? "ContractCard3D" : "ContractCard2D";
 
@@ -43,9 +43,6 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
                 contract.totalSellPrice) *
                 100
         );
-        if (perc > 100) {
-            perc = 100;
-        }
         return perc;
     };
 
@@ -56,34 +53,23 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
       }
     }, [contractStatus, contract]);
 
-    const getPercentage = () => {
-        const sellPrice = contract.totalSellPrice / contract.optionCount;
-        let perc = Math.round(
-            ((sellPrice - regularMarketPrice) / sellPrice) * 100
-        );
-        if (perc > 100) {
-            perc = 100;
-        }
-        setPercentage(perc);
-    };
-
-    const getReturn = () => {
-        const sellPrice = contract.totalSellPrice / contract.optionCount;
-        const re = Math.round(
-            (sellPrice - regularMarketPrice) * contract.optionCount
-        );
-        const absRe = Math.abs(re);
-        if (re > 0) {
-            setRet(`+$${absRe}`);
-        } else {
-            setRet(`-$${absRe}`);
-        }
-    };
-
     useEffect(() => {
-        getPercentage();
-        getReturn();
-    }, [regularMarketPrice]);
+        const calculatePercentageAndReturn = () => {
+            const sellPrice = contract.totalSellPrice / contract.optionCount;
+            const perc = Math.round(
+                ((sellPrice - regularMarketPrice) / sellPrice) * 100
+            );
+            setPercentage(perc);
+    
+            const re = Math.round(
+                (sellPrice - regularMarketPrice) * contract.optionCount
+            );
+            const absRe = Math.abs(re);
+            setRet(re > 0 ? `+$${absRe}` : `-$${absRe}`);
+        };
+    
+        calculatePercentageAndReturn();
+    }, [regularMarketPrice, contract.totalSellPrice, contract.optionCount]);
 
     return (
         <div className={cardClassName}>
@@ -123,7 +109,7 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
                         sx={{
                             fontSize: "14px",
                             fontFamily: "IBMPlexSans-Medium",
-                            color: statusColors.main,
+                            color: cardTextColors.lightText,
                         }}
                     >
                         {contract.optionCount > 1
@@ -160,7 +146,7 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
                                     sx={{
                                         fontSize: "16px",
                                         fontFamily: "IBMPlexSans-Medium",
-                                        color: statusColors.main,
+                                        color: cardTextColors.lightText,
                                         mr: "5px",
                                     }}
                                 >
@@ -173,7 +159,7 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
                             sx={{
                                 fontSize: "14px",
                                 fontFamily: "IBMPlexSans-Medium",
-                                color: statusColors.main,
+                                color: cardTextColors.lightText,
                                 mr: "5px",
                             }}
                         >
@@ -182,27 +168,27 @@ const ContractCard: React.FC<ContractCardProps> = (props) => {
                     </Box>
                 </Box>
                 {contractStatus === "active" ? (
-                    <LinearProgressWithLabel
-                        value={timeProgress(
-                            contract.startDate,
-                            contract.expireDate
-                        )}
-                        status={statusColors.variant}
-                        lineColor="white"
-                    />
+                    <div>
+                        <LinearProgressWithLabel
+                            value={timeProgress(
+                                contract.startDate,
+                                contract.expireDate
+                            )}
+                            percentTextColor={cardTextColors.lightPercentage}
+                            lineColor={LinearLineColor.White}
+                        />
+                        <LinearProgressWithLabel
+                            value={percentage}
+                            percentTextColor={cardTextColors.lightPercentage}
+                            lineColor={percentage > 0 ? LinearLineColor.Green : LinearLineColor.Red}
+                        />
+                    </div>
+
                 ) : (
                     <LinearProgressWithLabel
                         value={getClosePercentage()}
-                        status={statusColors.variant}
-                        lineColor="white"
-                    />
-                )}
-
-                {contractStatus === "active" && (
-                    <LinearProgressWithLabel
-                        value={percentage}
-                        status={statusColors.variant}
-                        lineColor="green"
+                        percentTextColor={cardTextColors.lightPercentage}
+                        lineColor={LinearLineColor.White}
                     />
                 )}
             </Card>

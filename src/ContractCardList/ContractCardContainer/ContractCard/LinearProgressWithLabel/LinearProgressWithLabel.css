@@ -12,3 +12,8 @@
     background-color: #00B275 !important;
     border-radius: 100px;
 }
+
+.LinearProgressWithLabel .MuiLinearProgress-root.red .MuiLinearProgress-bar {
+    background-color: #FF4040 !important;
+    border-radius: 100px;
+}

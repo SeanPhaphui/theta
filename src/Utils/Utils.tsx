@@ -42,22 +42,22 @@ export const getContractStatus = (contract: ContractObject): string => {
     }
 }
 
-export const getStatusColorVariation = (status: string) => {
+export const getCardTextColors = (status: string) => {
     switch (status) {
         case 'loss':
             return {
-                main: '#FFCCCC', // replace with the main color for loss status
-                variant: '#FF9999' // replace with the variant color for loss status
+                lightText: '#FFCCCC',
+                lightPercentage: '#FF9999'
             };
         case 'gain':
             return {
-                main: '#99FFCC', // replace with the main color for gain status
-                variant: '#66FF33' // replace with the variant color for gain status
+                lightText: '#99FFCC',
+                lightPercentage: '#66FF33'
             };
         default:
             return {
-                main: '#99CCF3', // replace with the main color for active status
-                variant: 'rgb(0, 200, 255)' // replace with the variant color for active status
+                lightText: '#99CCF3',
+                lightPercentage: '#00C8FF'
             };
     }
 }
@@ -84,7 +84,7 @@ export const getContractMarketPrice = async (contract: ContractObject): Promise<
 
     const data = await getOption(stonksUrl);
     const output = data.optionChain.result[0];
-    if(output == undefined){
+    if(output === undefined){
         return 0;
     }
     const regularMarketPrice = output.quote.regularMarketPrice * 100;

@@ -1,35 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Box, LinearProgress, Typography } from "@mui/material";
 import "./LinearProgressWithLabel.css";
 
-interface LinearProgressWithLabelProps {
-    value: number;
-    status: string;
-    lineColor: string;
+export enum LinearLineColor {
+    White = 'white',
+    Green = 'green',
+    Red = 'red'
 }
 
-export const LinearProgressWithLabel: React.FC<LinearProgressWithLabelProps> = ({
-    value: initialValue,
-    status,
-    lineColor,
-  }) => {
+interface LinearProgressWithLabelProps {
+    value: number;
+    percentTextColor: string;
+    lineColor: LinearLineColor;
+}
+
+const LinearProgressWithLabel: React.FC<
+    LinearProgressWithLabelProps
+> = ({ value: initialValue, percentTextColor, lineColor }) => {
     const [value, setValue] = useState(0);
-  
+
     useEffect(() => {
-      const timeout = setTimeout(() => setValue(initialValue), 200); // Delay of 200ms
-      return () => clearTimeout(timeout);
+        const timeout = setTimeout(() => setValue(initialValue), 200); // Delay of 200ms
+        return () => clearTimeout(timeout);
     }, [initialValue]);
-  
+
+    const adjustedValue = useMemo(() => {
+        if (lineColor === LinearLineColor.Red) {
+            return value < -100 ? 100 : -value;
+        }
+        return value;
+    }, [value, lineColor]);
+
     return (
         <div className="LinearProgressWithLabel">
             <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Box sx={{ width: "100%", mr: 1 }}>
-                    <LinearProgress className={lineColor} variant="determinate" value={value} />
+                    <LinearProgress
+                        className={lineColor}
+                        variant="determinate"
+                        value={adjustedValue}
+                    />
                 </Box>
                 <Box sx={{ minWidth: 35 }}>
-                    <Typography variant="body2" color={status}>{`${Math.round(
-                        value
-                    )}%`}</Typography>
+                    <Typography
+                        variant="body2"
+                        color={percentTextColor}
+                    >{`${value}%`}</Typography>
                 </Box>
             </Box>
         </div>
