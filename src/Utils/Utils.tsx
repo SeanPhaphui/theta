@@ -4,7 +4,8 @@ import { ContractObject } from "../Contract/Contract";
 
 export const timeProgress = (startDate: Dayjs, endDate: Dayjs): number => {
     const currentDate = dayjs();
-    const totalDays = endDate.diff(startDate, "day");
+    const endDatePlusOneDay = endDate.add(2, 'day');
+    const totalDays = endDatePlusOneDay.diff(startDate, "day");
     const daysPassed = currentDate.diff(startDate, "day");
     let percentage = Math.round((daysPassed / totalDays) * 100);
     if (percentage > 100) {
@@ -14,12 +15,14 @@ export const timeProgress = (startDate: Dayjs, endDate: Dayjs): number => {
 };
 
 export const hasDayPassed = (d1: dayjs.Dayjs, d2: dayjs.Dayjs): boolean => {
-    return d1.isAfter(d2);
+    const d2PlusOneDay = d2.add(1, 'day');
+    return d1.isAfter(d2PlusOneDay);
 };
 
 export const getDaysCardStatus = (expireDate: dayjs.Dayjs, boughtBack: boolean): string => {
-    const daysLeft = expireDate.diff(dayjs(), "day");
-    if(daysLeft < 0 || boughtBack){
+    const expireDatePlusOneDay = expireDate.add(2, 'day');
+    const daysLeft = expireDatePlusOneDay.diff(dayjs(), "day");
+    if(daysLeft <= 0 || boughtBack){
         return "Closed";
     } else if (daysLeft > 1){
         return daysLeft + " days left";
