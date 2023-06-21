@@ -50,7 +50,7 @@ const D3Chart: React.FC<D3ChartProps> = ({ data }) => {
 
       const xAxis = d3
         .axisBottom(xScale)
-        .tickArguments([7])
+        .tickArguments([4])
         .tickFormat((d) => d3.timeFormat("%b %d")(d as Date));
       const yAxis = d3.axisLeft(yScale).tickFormat((d) => `$${d.toLocaleString()}`);
 
