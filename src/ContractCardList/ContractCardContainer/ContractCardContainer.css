@@ -7,7 +7,7 @@
 .ContractCardContainer2D {
     position: sticky;
     bottom: 20px; 
-    /* bottom gets overwritten by ContractsPage.tsx */
+    /* bottom gets overwritten by Home.tsx */
 }
 
 

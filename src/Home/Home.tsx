@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { ContractObject } from "../Contract/Contract";
 import ContractDialog from "../ContractDialog/ContractDialog";
 import { testContracts } from "../Utils/Utils";
-import "./ContractsPage.css";
+import "./Home.css";
 
 import ContractCardList from "../ContractCardList/ContractCardList";
 import DataManager from "../DataManager/DataManager";
@@ -17,7 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 dayjs.extend(minMax);
 dayjs.extend(advancedFormat);
 
-const ContractsPage: React.FC = () => {
+const Home: React.FC = () => {
     const [is3D, setIs3D] = useState(false);
     const [open, setOpen] = React.useState(false);
     const [contractId, setContractId] = useState<string>("");
@@ -180,7 +180,7 @@ const ContractsPage: React.FC = () => {
     }, [contracts]);
     
     return (
-        <div className="ContractsPage">
+        <div className="Home">
             <DataManager
                 contracts={contracts}
                 restoreContracts={(contracts) => setContracts(contracts)}
@@ -206,4 +206,4 @@ const ContractsPage: React.FC = () => {
     );
 };
 
-export default ContractsPage;
+export default Home;

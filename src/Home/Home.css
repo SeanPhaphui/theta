@@ -1,13 +1,13 @@
-.ContractsPage {
+.Home {
     width: 85%;
 }
 
-.ContractsPage .title {
+.Home .title {
     font-family: "Plus Jakarta Sans";
     font-weight: 800;
     font-size: 36px;
 }
 
-.ContractsPage .MuiSnackbar-root {
+.Home .MuiSnackbar-root {
     margin-bottom: 20px;
 }
