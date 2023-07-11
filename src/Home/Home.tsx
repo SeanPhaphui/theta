@@ -13,6 +13,7 @@ import D3ChartContainer from "./D3ChartContainer/D3ChartContainer";
 import { Button, Snackbar } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { useNavigate } from "react-router-dom";
 
 dayjs.extend(minMax);
 dayjs.extend(advancedFormat);
@@ -27,6 +28,12 @@ const Home: React.FC = () => {
     const [averageMonthlyReturn, setAverageMonthlyReturn] = useState<number>(0);
     const [averageDailyReturn, setAverageDailyReturn] = useState<number>(0);
 
+    const navigate = useNavigate();
+
+    const navigateToStats = () => {
+        // 👇️ navigate to /stats
+        navigate("/stats", { state: contracts  });
+    };
 
     useEffect(() => {
         const startDateArray = contracts.map((contract) => contract.startDate);
@@ -188,6 +195,9 @@ const Home: React.FC = () => {
             />
             <button onClick={toggleView}>
                 {is3D ? "3D Cards" : "2D Cards"}
+            </button>
+            <button onClick={navigateToStats}>
+                View Stats
             </button>
             <div className="title">Total Return</div>
             <div className="title">{"since " + earliestStartDate?.format("MMMM Do")}</div>

@@ -1,0 +1,9 @@
+.Stats {
+    width: 85%;
+}
+
+.Stats .title {
+    font-family: "Plus Jakarta Sans";
+    font-weight: 800;
+    font-size: 36px;
+}
