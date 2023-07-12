@@ -6,4 +6,18 @@
     font-family: "Plus Jakarta Sans";
     font-weight: 800;
     font-size: 36px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.netReturns {
+    margin-top: 20px;
+}
+
+.loss {
+    background: linear-gradient(to right bottom, #FF4500, #8B0000 120%);
+}
+
+.gain {
+    background: linear-gradient(to right bottom, #38c731, #008000 120%);
 }

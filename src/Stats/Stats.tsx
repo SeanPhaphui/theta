@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
-import "./Stats.css";
-import { ContractObject } from "../Contract/Contract";
+import {
+    Box,
+    Card,
+    Typography
+} from "@mui/material";
 import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
+import { ContractObject } from "../Contract/Contract";
 import { testContracts } from "../Utils/Utils";
+import "./Stats.css";
 
 const Stats: React.FC = () => {
     const [contracts, setContracts] = useState<ContractObject[]>(testContracts);
@@ -52,7 +57,7 @@ const Stats: React.FC = () => {
         const formattedNetReturn = Math.abs(netReturn).toLocaleString();
         return netReturn < 0
             ? `-$${formattedNetReturn}`
-            : `$${formattedNetReturn}`;
+            : `+$${formattedNetReturn}`;
     }
 
     return (
@@ -61,10 +66,32 @@ const Stats: React.FC = () => {
             <div className="netReturns">
                 {Object.entries(netReturns).map(([ticker, netReturn]) => (
                     <div key={ticker}>
-                        <span className="ticker">{ticker}: </span>
-                        <span className="netReturn">
-                            {formatNetReturn(netReturn)}
-                        </span>
+                        <Card className={netReturn > 0 ? "gain" : "loss"}>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Typography
+                                    sx={{
+                                        fontSize: 20,
+                                        fontFamily: "IBMPlexSans-SemiBold",
+                                    }}
+                                >
+                                    {ticker}
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        fontSize: 20,
+                                        fontFamily: "IBMPlexSans-SemiBold",
+                                    }}
+                                >
+                                    {formatNetReturn(netReturn)}
+                                </Typography>
+                            </Box>
+                        </Card>
                     </div>
                 ))}
             </div>
