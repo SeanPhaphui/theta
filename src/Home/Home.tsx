@@ -4,7 +4,7 @@ import minMax from "dayjs/plugin/minMax";
 import React, { useEffect, useState } from "react";
 import { ContractObject } from "../Contract/Contract";
 import ContractDialog from "../ContractDialog/ContractDialog";
-import { testContracts } from "../Utils/Utils";
+import { loadContractsFromLocalStorage, testContracts } from "../Utils/Utils";
 import "./Home.css";
 
 import ContractCardList from "../ContractCardList/ContractCardList";
@@ -168,17 +168,11 @@ const Home: React.FC = () => {
     // Then, in a useEffect hook, you can load the value from localStorage
     // when the component first mounts.
     useEffect(() => {
-        const storedContracts = localStorage.getItem('Contracts');
-        if (storedContracts) {
-          let contracts: ContractObject[] = JSON.parse(storedContracts);
-          contracts = contracts.map(contract => ({
-            ...contract,
-            startDate: dayjs(contract.startDate),
-            expireDate: dayjs(contract.expireDate)
-          }));
-          setContracts(contracts);
+        const loadedContracts = loadContractsFromLocalStorage();
+        if (loadedContracts) {
+            setContracts(loadedContracts);
         }
-      }, []);
+    }, []);
 
     // You can also use another useEffect to save the value to localStorage
     // whenever it changes.   

@@ -94,6 +94,20 @@ export const getContractMarketPrice = async (contract: ContractObject): Promise<
     return regularMarketPrice;
 };
 
+export const loadContractsFromLocalStorage = (): ContractObject[] | null => {
+    const storedContracts = localStorage.getItem("Contracts");
+    if (storedContracts) {
+        const parsedContracts: ContractObject[] = JSON.parse(storedContracts);
+        const mappedContracts = parsedContracts.map((contract) => ({
+            ...contract,
+            startDate: dayjs(contract.startDate),
+            expireDate: dayjs(contract.expireDate),
+        }));
+        return mappedContracts;
+    }
+    return null;
+};
+
 export const testContracts: ContractObject[] = [
     {
         id: uuidv4(),
