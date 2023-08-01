@@ -1,0 +1,42 @@
+.DepositDialog {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.DepositDialog .MuiButtonBase-root {
+    width: 100%;
+    border-radius: 10px;
+    font-family: "IBMPlexSans-Bold";
+    text-transform: none;
+}
+
+.deposit-dialog-content {
+    font-family: "Roboto";
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.deposit-dialog-content .item-top {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.deposit-dialog-content .item {
+    margin-bottom: 20px;
+}
+
+.deposit-dialog-content .item .MuiButtonBase-root.MuiButton-root {
+    border-radius: 10px;
+    font-family: "IBMPlexSans-Bold";
+    text-transform: none;
+}
+
+.deposit-dialog-content .item .MuiButtonBase-root.MuiButton-root.Mui-disabled {
+    background-color: #0000001f;
+}
+
+.deposit-dialog-content .item .deposit {
+    background-color: #007FFF;
+    width: 100%;
+}
+

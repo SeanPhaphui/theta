@@ -1,0 +1,42 @@
+.TradeDialog {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.TradeDialog .MuiButtonBase-root {
+    width: 100%;
+    border-radius: 10px;
+    font-family: "IBMPlexSans-Bold";
+    text-transform: none;
+}
+
+.trade-dialog-content {
+    font-family: "Roboto";
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.trade-dialog-content .item-top {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.trade-dialog-content .item {
+    margin-bottom: 20px;
+}
+
+.trade-dialog-content .item .MuiButtonBase-root.MuiButton-root {
+    border-radius: 10px;
+    font-family: "IBMPlexSans-Bold";
+    text-transform: none;
+}
+
+.trade-dialog-content .item .MuiButtonBase-root.MuiButton-root.Mui-disabled {
+    background-color: #0000001f;
+}
+
+.trade-dialog-content .item .trade {
+    background-color: #007FFF;
+    width: 100%;
+}
+

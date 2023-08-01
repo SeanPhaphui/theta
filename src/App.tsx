@@ -5,6 +5,7 @@ import "./font.css";
 import Home from "./Home/Home";
 import { Route, Routes } from "react-router-dom";
 import Stats from "./Stats/Stats";
+import Margin from "./Margin/Margin";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home/>}/>
                         <Route path="/stats" element={<Stats/>}/>
+                        <Route path="/margin" element={<Margin/>}/>
                     </Routes>
                 </header>
             </div>

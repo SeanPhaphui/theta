@@ -35,6 +35,11 @@ const Home: React.FC = () => {
         navigate("/stats", { state: contracts  });
     };
 
+    const navigateToMargin = () => {
+        // 👇️ navigate to /stats
+        navigate("/margin");
+    };
+
     useEffect(() => {
         const startDateArray = contracts.map((contract) => contract.startDate);
         const earliestDate = dayjs.min(startDateArray);
@@ -192,6 +197,9 @@ const Home: React.FC = () => {
             </button>
             <button onClick={navigateToStats}>
                 View Stats
+            </button>
+            <button onClick={navigateToMargin}>
+                Margin
             </button>
             <div className="title">Total Return</div>
             <div className="title">{"since " + earliestStartDate?.format("MMMM Do")}</div>
