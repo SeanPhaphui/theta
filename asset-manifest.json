@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/theta/static/css/main.f63b0c76.css",
-    "main.js": "/theta/static/js/main.39bcc0af.js",
+    "main.css": "/theta/static/css/main.edb6e0b1.css",
+    "main.js": "/theta/static/js/main.3f196f57.js",
     "static/js/787.1615fb9d.chunk.js": "/theta/static/js/787.1615fb9d.chunk.js",
     "static/media/IBMPlexSans-SemiBold.ttf": "/theta/static/media/IBMPlexSans-SemiBold.fffccb38819b2f4eb6ab.ttf",
     "static/media/IBMPlexSans-Medium.ttf": "/theta/static/media/IBMPlexSans-Medium.4c69d30a49b3ad04d7df.ttf",
@@ -64,12 +64,12 @@
     "static/media/roboto-greek-ext-400-normal.woff": "/theta/static/media/roboto-greek-ext-400-normal.f708607d2a7290fb8bfa.woff",
     "static/media/roboto-greek-ext-700-normal.woff": "/theta/static/media/roboto-greek-ext-700-normal.249853776d22a271b2b5.woff",
     "index.html": "/theta/index.html",
-    "main.f63b0c76.css.map": "/theta/static/css/main.f63b0c76.css.map",
-    "main.39bcc0af.js.map": "/theta/static/js/main.39bcc0af.js.map",
+    "main.edb6e0b1.css.map": "/theta/static/css/main.edb6e0b1.css.map",
+    "main.3f196f57.js.map": "/theta/static/js/main.3f196f57.js.map",
     "787.1615fb9d.chunk.js.map": "/theta/static/js/787.1615fb9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f63b0c76.css",
-    "static/js/main.39bcc0af.js"
+    "static/css/main.edb6e0b1.css",
+    "static/js/main.3f196f57.js"
   ]
 }
